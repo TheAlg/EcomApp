@@ -4,8 +4,8 @@ declare(strict_types=1);
 namespace App\Backend\Controllers;
 
 use Base\App\ControllerBase;
-use App\Backend\Models\ResetPasswords;
-use App\Backend\Models\Users;
+use App\Application\Models\ResetPasswords;
+use App\Application\Models\Users;
 use App\Plugins\Auth\Exception as AuthException;
 
 /**
@@ -39,8 +39,8 @@ class UsersController extends ControllerBase
         ]);
 
         if ($user->save()) {
-            $this->flash->success("success");
-            return $this->response->redirect('/');
+            return $this->loginAction($this->request->getPost('register_email'), 
+                                    $this->request->getPost('register_password'));
         }
         //not saved
         foreach ($user->getMessages() as $message) {
@@ -53,16 +53,18 @@ class UsersController extends ControllerBase
     /**
      * Starts a session in the admin backend
      */
-    public function loginAction()
+    public function loginAction($email = null, $password= null)
     {
         try {
             $this->auth->check([
-                'email'    => $this->request->getPost('login_email'),
-                'password' => $this->request->getPost('login_password'),
-                'remember' => $this->request->getPost('login_remember'),
+                'email'    => isset($email) ? $email: $this->request->getPost('login_email'),
+                'password' => isset($password) ? $password :$this->request->getPost('login_password'),
+                'remember' => $this->request->getPost('login-remember'),
             ]);
 
-            $this->flash->success("success");
+            $user = $this->session->get('auth-identity');
+
+            $this->flash->success("Welcome " . $user['name']);
             return $this->response->redirect('/');
             
         } catch (AuthException $e) {

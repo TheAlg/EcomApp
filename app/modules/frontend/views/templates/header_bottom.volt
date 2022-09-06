@@ -4,16 +4,16 @@
         <nav class="main-nav">
             <ul class="menu">
                 <li id ='header_index' class="">
-                    <a href="index.html" >Home</a>
+                    <a href="/" >Home</a>
                 </li>
                 <li id="header_shop" class=''>
                     <a href="/products">Shop</a>
                 </li>
                 <li id="header_about" class="">
-                    <a href="product.html"  >About</a>
+                    <a href="/about"  >About</a>
                 </li>
                 <li id="header_contact" class="">
-                    <a href="#">Contact</a>
+                    <a href="/contact">Contact</a>
                 </li>
             </ul><!-- End .menu -->
         </nav><!-- End .main-nav -->

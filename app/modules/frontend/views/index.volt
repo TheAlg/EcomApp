@@ -5,6 +5,8 @@
         {{ assets.outputCss('headercss') }}
         {{ assets.outputJs('headerjs') }}
     </head>
+    <script>
+    </script>
     <body>
         {{ partial('header') }}
         {{ flash.output() }}

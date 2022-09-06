@@ -9,8 +9,10 @@ class CartController extends ControllerBase
 {
 
     public function initialize(){
-        $this->view->items = $this->cart->instance('cart')->content();
+        $this->view->controllerName = $this->dispatcher->getControllerName();
+
     }
+    
     public function indexAction(): void
     {
     }

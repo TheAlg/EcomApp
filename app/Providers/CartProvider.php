@@ -5,7 +5,7 @@ namespace Base\Providers;
 
 use Phalcon\Di\DiInterface;
 use Phalcon\Di\ServiceProviderInterface;
-use Base\Plugins\CartShopping;
+use Base\Plugins\Cart;
 
 class CartProvider implements ServiceProviderInterface
 {
@@ -22,7 +22,7 @@ class CartProvider implements ServiceProviderInterface
     public function register(DiInterface $di): void
     {
         $di->setShared($this->providerName, function () use ($di) {
-                return new CartShopping( $di->getSession(), 'compare');
+                return new Cart( $di->getSession(), 'cart');
             }
         );
     }

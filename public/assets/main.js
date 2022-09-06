@@ -1,6 +1,7 @@
 jQuery(document).ready(function($) {
 	'use strict';
 
+
 	$('.demo-filter a').on('click', function(e) {
 		e.preventDefault();
 		var filter = $(this).attr('href').replace('#', '');
@@ -48,6 +49,7 @@ jQuery(document).ready(function($) {
 		$('html, body').animate({scrollTop: $('.section-elements').offset().top}, 1000);
 	});
 
+
 	$('.goto-support').on('click', function(e) {
 		e.preventDefault();
 		$('html, body').animate({scrollTop: $('.section-support').offset().top}, 1200);
@@ -64,3 +66,4 @@ jQuery(window).on('load', function() {
 		jQuery(window).trigger('scroll');
 	});
 });
+

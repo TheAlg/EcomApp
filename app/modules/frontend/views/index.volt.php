@@ -5,6 +5,8 @@
         <?= $this->assets->outputCss('headercss') ?>
         <?= $this->assets->outputJs('headerjs') ?>
     </head>
+    <script>
+    </script>
     <body>
         <?= $this->partial('header') ?>
         <?= $this->flash->output() ?>

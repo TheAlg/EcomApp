@@ -3,7 +3,7 @@
     <div class="header-middle">
         <div class="container">
             <div class="header-center">
-                <a href="index.html" class="logo">
+                <a href="/" class="logo">
                     <img src="/assets/images/demos/demo-2/logo.png" alt="Molla Logo" width="105" height="25">
                 </a>
             </div>
@@ -33,20 +33,9 @@
             <div class="select-custom">
                 <select id="cat" name="cat">
                     <option value="">All Departments</option>
-                    <option value="1">Fashion</option>
-                    <option value="2">- Women</option>
-                    <option value="3">- Men</option>
-                    <option value="4">- Jewellery</option>
-                    <option value="5">- Kids Fashion</option>
-                    <option value="6">Electronics</option>
-                    <option value="7">- Smart TVs</option>
-                    <option value="8">- Cameras</option>
-                    <option value="9">- Games</option>
-                    <option value="10">Home &amp; Garden</option>
-                    <option value="11">Motors</option>
-                    <option value="12">- Cars and Trucks</option>
-                    <option value="15">- Boats</option>
-                    <option value="16">- Auto Tools &amp; Supplies</option>
+                    <?php foreach ($departments as $department) { ?>
+                        <option value=""><?= $department ?></option>
+                    <?php } ?>
                 </select>
             </div><!-- End .select-custom -->
             <label for="q" class="sr-only">Search</label>
@@ -59,16 +48,95 @@
             <div class="header-right">
                 <div class="header-dropdown-link">
                     <!--TAG-->
-<div class="account">
-    <a href="#signin-modal" data-toggle="modal" title="My account">
+<div class="account account-dropdown">
+    <?php if (!isset($user)) { ?>
+    <a href="#signin-modal" data-toggle="modal" title="My account" role="button" aria-haspopup="true" aria-expanded="false" data-display="static">
+    <?php } else { ?>
+    <a href="/account" title="My account">
+    <?php } ?>
+
     <div class="icon">
         <i class="icon-user"></i>
     </div>
-    <p href="/user/login">Account</p>
+    <p href="/users/login/">Account</p>
     </a>
+    <div class="dropdown-menu dropdown-menu-right">
+        <?php if (isset($user)) { ?>
+            <div class="account-actions">
+                <a href="/account" class="btn btn-outline-primary">
+                    Account 
+                </a>
+            </div>
+            <div class="mb-3"></div>
+            <hr>
+            <ul class="account-actions-list">
+                <li>
+                    <a class="action-link" href =""> 
+                        <span> Account Settings </span> 
+                    </a>
+                </li>
+                <li>
+                    <a class="action-link" href =""> 
+                        <span> Return a product </span> 
+                    </a>
+                </li>
+                <li>
+                    <a class="action-link" href =""> 
+                        <span> Deliveries  </span>
+                    </a>
+                </li>
+                <li>
+                    <a class="action-link" href =""> 
+                        <span> Help & Contact </span>
+                    </a>
+                </li>    
+            </ul>
+            <hr>
+            <div class="account-actions"> You're not <?= $user->name ?> ? 
+                <a href ="/users/logout/" class="create-acount"> 
+                    <span class="blue" > &nbsp;&nbsp;disconnect </span>
+                </a>
+            </div>
+        <?php } else { ?>
+            <div class="account-actions">
+                <a href="/users/login/" class="btn btn-primary btn-round white">
+                    <span>Login</span>
+                    <i class="icon-long-arrow-right"></i>
+                </a>
+            </div>
+            <div class="account-actions">
+                <a href ="/users/signup/" class="create-acount"> 
+                    <span> Or create new account </span>
+                </a>
+            </div>
+            <hr>
+            <ul class="account-actions-list">
+                <li>
+                    <a class="action-link" href =""> 
+                        <span> Account Settings </span> 
+                    </a>
+                </li>
+                <li>
+                    <a class="action-link" href =""> 
+                        <span> Deliveries  </span>
+                    </a>
+                </li>
+                <li>
+                    <a class="action-link" href =""> 
+                        <span> Help & Contact </span>
+                    </a>
+                </li>    
+            </ul>
+        <?php } ?>
+        
+           
+
+
+    </div>
 </div>
 
 <!--BANNER-->
+<?php if (!isset($user)) { ?>
 <div class="modal fade" id="signin-modal" tabindex="-1" role="dialog" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered" role="document">
         <div class="modal-content">
@@ -212,6 +280,7 @@
         </div>
     </div>  
 </div>
+<?php } ?>
                     <a href="wishlist.html" class="wishlist-link">
     <i class="icon-heart-o"></i>
     <span class="wishlist-count">3</span>
@@ -219,19 +288,18 @@
 </a>
 
 
-                    
-<div class="dropdown cart-dropdown">
-    <a href="#" class="dropdown-toggle" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" data-display="static">
+                    <div class="dropdown cart-dropdown" id="cart-item">
+    <a href="/cart" class="dropdown-toggle" role="button" aria-haspopup="true" aria-expanded="false" data-display="static">
         <div class="icon">
             <i class="icon-shopping-cart"></i>
-            <span class="cart-count" id="cartCount"> <?= $cart_count ?></span>
+            <span class="cart-count" id="cartCount"> <?= $this->cart->count ?></span>
         </div>
         <p>Cart</p>
     </a>      
-    <div class="dropdown-menu dropdown-menu-right">
+    <div class="dropdown-menu dropdown-menu-right cart">
         <div class="dropdown-cart-products" id="cart_items">  
-            <?php foreach ($cart_items as $item) { ?>
-                <div class="product productselector" value= " <?= $item->productId ?> " >
+            <?php foreach ($this->cart->content as $item) { ?>
+                <div class="product productselector" value= "<?= $item->id ?>" >
                     <div class="product-cart-details">
                         <h4 class="product-title">
                             <a href="product.html"> <?= $item->title ?> </a>
@@ -247,21 +315,24 @@
                             <img src="<?= $item->picture ?>" alt="product">
                         </a>
                     </figure>
-                    <a class="btn-remove removeProduct" type= "submit" value ="<?= $item->productId ?>" title="Remove Product"><i class="icon-close"></i></a>
+                    <a class="btn-remove" type= "submit" title="Remove Product"><i class="icon-close btn-cart-remove" value="<?= $item->id ?>"></i></a>
                 </div>
             <?php } ?>
         </div>
         <!--total-->
         <div class="dropdown-cart-total">
             <span>Total</span>
-            <span class="cart-total-price" id ="cart-total-price">$ 
-                <?= $cart_totalPrice ?>  
+            <span class="cart-total-price" id ="cart-tag-price">$ 
+                <?= $this->cart->total ?>  
             </span>
         </div>
         <!--actions-->
         <div class="dropdown-cart-action">
-            <a href="/cart" class="btn btn-primary">View Cart</a>
-            <a href ="" id = "emptyCart" class="btn btn-outline-primary-2"><span>Checkout</span><i class="icon-long-arrow-right"></i></a>
+            <a href="/cart/" class="btn btn-primary">View Cart</a>
+            <a href ="/checkout/" id = "emptyCart" class="btn btn-outline-primary-2">
+                <span>Checkout</span>
+                <i class="icon-long-arrow-right"></i>
+            </a>
         </div>
     </div>    
 </div>
@@ -278,16 +349,16 @@
         <nav class="main-nav">
             <ul class="menu">
                 <li id ='header_index' class="">
-                    <a href="index.html" >Home</a>
+                    <a href="/" >Home</a>
                 </li>
                 <li id="header_shop" class=''>
                     <a href="/products">Shop</a>
                 </li>
                 <li id="header_about" class="">
-                    <a href="product.html"  >About</a>
+                    <a href="/about"  >About</a>
                 </li>
                 <li id="header_contact" class="">
-                    <a href="#">Contact</a>
+                    <a href="/contact">Contact</a>
                 </li>
             </ul><!-- End .menu -->
         </nav><!-- End .main-nav -->

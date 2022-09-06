@@ -13,6 +13,8 @@ use App\Forms\LoginForm;
 use App\Forms\SignUpForm;
 use Base\Plugins\Views;
 use function Base\Container\getCurrentUri;
+use App\Application\Models\Users;
+
 
 class ViewProvider implements ServiceProviderInterface
 {
@@ -42,11 +44,15 @@ class ViewProvider implements ServiceProviderInterface
             //forms
             $view->loginForm = new loginForm();
             $view->singUpForm = new SignUpForm();
-            //cart variables
-            $view->cart_count = $di->get('cart')->instance('cart')->count();
-            $view->cart_items = $di->get('cart')->instance('cart')->content();
-            $view->cart_totalPrice = $di->get('cart')->instance('cart')->total();
+            //cart 
+            $view->cart = $di->get('cart');
 
+            //categories
+            $view->departments = $di->get('products')->getFilters()->categories;
+            //user
+            $userSession = $di->get('session')->get('auth-identity');
+            if (isset($userSession) && Users::findFirst($userSession['id']))
+                $view->user = Users::findFirst($userSession['id']);
             
             $view->setViewsDir($viewsDir);
             $view->setPartialsDir($partialDir);
@@ -61,8 +67,9 @@ class ViewProvider implements ServiceProviderInterface
                     ]);
                     $volt->getCompiler()->addFunction('contains','str_contains');
                     $volt->getCompiler()->addFunction('push','array_push');
-                    $volt->getCompiler()->addFunction('sizeof','sizeof');
-
+                    $volt->getCompiler()->addFunction('floatval','floatval');
+                    $volt->getCompiler()->addFunction('number_format','number_format');
+                    $volt->getCompiler()->addFunction('str_replace','str_replace');
 
                     return $volt;
                 },

@@ -5,6 +5,7 @@ namespace Base\App;
 
 use Phalcon\Mvc\Controller;
 use Phalcon\Mvc\Dispatcher;
+use Phalcon\Http\Response;
 use Base\Plugins\Acl;
 use Base\Plugins\Auth;
 
@@ -17,6 +18,7 @@ use Base\Plugins\Auth;
  */
 class ControllerBase extends Controller
 {
+
     /**
      * Execute before the router so we can determine if this is a private
      * controller, and must be authenticated, or a public controller that is
@@ -28,6 +30,8 @@ class ControllerBase extends Controller
      */
     public function beforeExecuteRoute(Dispatcher $dispatcher): bool
     {
+
+
         $controllerName = $dispatcher->getControllerName();
         $actionName     = $dispatcher->getActionName();
 
@@ -72,16 +76,18 @@ class ControllerBase extends Controller
     {
         $controllerName = $dispatcher->getControllerName();
         $actionName     = $dispatcher->getActionName();
-        if ($dispatcher->getModuleName() == "frontend"){
-        return $dispatcher->forward([
-            'module' => 'backend',
-            'controller' => $controllerName,
-            'action'     => $actionName,
-        ]);
-        }
+        $returnedValue = $dispatcher->getReturnedValue();
 
-
-  
-  
+        if ($dispatcher->getModuleName() === "frontend" && $returnedValue === true )
+            return $dispatcher->forward([
+                'module' => 'backend',
+                'controller' => $controllerName,
+                'action'     => $actionName,
+            ]);
+        /*if ($dispatcher->getModuleName() === "backend" && $controllerName === "account" )
+            {
+                $previousController = $this->dispatcher->getPreviousControllerName();
+                $this->response->redirect('/'. $previousController);
+            }*/
     }
 }

@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace Vokuro\Forms;
+namespace App\Forms;
 
 use Phalcon\Forms\Element\Hidden;
 use Phalcon\Forms\Element\Select;
@@ -11,12 +11,13 @@ use Phalcon\Filter\Validation\Validator\Email;
 use Phalcon\Filter\Validation\Validator\PresenceOf;
 use Vokuro\Models\Profiles;
 
-class UsersForm extends Form
+class UsersFormss extends Form
 {
     /**
      * @param null $entity
      * @param array $options
      */
+
     public function initialize($entity = null, array $options = [])
     {
         // In edition the id is hidden

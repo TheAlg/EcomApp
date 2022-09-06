@@ -52,7 +52,6 @@ class Views extends \Base\App\ControllerBase
             return $array;
         else 
             return $this->standardSubCategories;
-        
     }
     public function date($date){
         $date = date_diff(new \DateTime("now"), date_create($date))->format('%R%a');
@@ -99,4 +98,14 @@ class Views extends \Base\App\ControllerBase
         else 
             return '';
     }
-}
+    public function dateFormat($year, $month){
+        if (strlen($month) == 1)
+        $month = '0'.$month;
+        return $year.'-'.$month;
+    }
+    public function radioCheck($param1, $param2, $id){
+        $html = '<input type="radio" id="'.$id .'" name="shipping" class="custom-control-input"';
+        $html .= $param1 === $param2 ? 'checked>': '>';
+        return $html;
+    }
+}	

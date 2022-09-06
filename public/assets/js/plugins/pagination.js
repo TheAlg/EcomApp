@@ -100,7 +100,7 @@
       render: function(isBoot) {
         var self = this;
         var model = self.model;
-        var el = model.el || $('<div class="paginationjs"></div>');
+        var el = model.el || $('<nav aria-label="Page navigation" class="page-navigation">');
         var isForced = isBoot !== true;
 
         self.callHook('beforeRender', isForced);
@@ -161,9 +161,9 @@
         if (attributes.pageRange === null) {
           for (i = 1; i <= totalPage; i++) {
             if (i == currentPage) {
-              html += '<li class="' + classPrefix + '-page J-paginationjs-page ' + activeClassName + '" data-num="' + i + '"><a>' + i + '<\/a><\/li>';
+              html += '<li class="' + classPrefix + ' ' + activeClassName + '" data-num="' + i + '"><a class="page-link">' + i + '<\/a><\/li>';
             } else {
-              html += '<li class="' + classPrefix + '-page J-paginationjs-page" data-num="' + i + '"><a href="' + pageLink + '">' + i + '<\/a><\/li>';
+              html += '<li class="' + classPrefix + '" data-num="' + i + '"><a class="page-link"> href="' + pageLink + '">' + i + '<\/a><\/li>';
             }
           }
           return html;
@@ -172,37 +172,38 @@
         if (rangeStart <= 3) {
           for (i = 1; i < rangeStart; i++) {
             if (i == currentPage) {
-              html += '<li class="' + classPrefix + '-page J-paginationjs-page ' + activeClassName + '" data-num="' + i + '"><a>' + i + '<\/a><\/li>';
+              html += '<li class="' + classPrefix + ' ' + activeClassName + '" data-num="' + i + '"><a class="page-link" >' + i + '<\/a><\/li>';
             } else {
-              html += '<li class="' + classPrefix + '-page J-paginationjs-page" data-num="' + i + '"><a href="' + pageLink + '">' + i + '<\/a><\/li>';
+              html += '<li class="' + classPrefix + '" data-num="' + i + '"><a class="page-link" href="' + pageLink + '">' + i + '<\/a><\/li>';
             }
           }
         } else {
           if (attributes.showFirstOnEllipsisShow) {
-            html += '<li class="' + classPrefix + '-page ' + classPrefix + '-first J-paginationjs-page" data-num="1"><a href="' + pageLink + '">1<\/a><\/li>';
+            html += '<li class="' + classPrefix + ' ' + classPrefix + '-first J-paginationjs-page "" data-num="1"><a class="page-link" href="' + pageLink + '">1<\/a><\/li>';
           }
           html += '<li class="' + classPrefix + '-ellipsis ' + disableClassName + '"><a>' + ellipsisText + '<\/a><\/li>';
         }
 
         for (i = rangeStart; i <= rangeEnd; i++) {
           if (i == currentPage) {
-            html += '<li class="' + classPrefix + '-page J-paginationjs-page ' + activeClassName + '" data-num="' + i + '"><a>' + i + '<\/a><\/li>';
+            html += '<li class="' + classPrefix + ' ' + activeClassName + '" data-num="' + i + '"><a class="page-link" >' + i + '<\/a><\/li>';
           } else {
-            html += '<li class="' + classPrefix + '-page J-paginationjs-page" data-num="' + i + '"><a href="' + pageLink + '">' + i + '<\/a><\/li>';
+            html += '<li class="' + classPrefix + '" data-num="' + i + '"><a class="page-link"  href="' + pageLink + '">' + i + '<\/a><\/li>';
           }
         }
 
         if (rangeEnd >= totalPage - 2) {
           for (i = rangeEnd + 1; i <= totalPage; i++) {
-            html += '<li class="' + classPrefix + '-page J-paginationjs-page" data-num="' + i + '"><a href="' + pageLink + '">' + i + '<\/a><\/li>';
+            html += '<li class="' + classPrefix + ' " data-num="' + i + '"><a class="page-link"  href="' + pageLink + '">' + i + '<\/a><\/li>';
           }
         } else {
-          html += '<li class="' + classPrefix + '-ellipsis ' + disableClassName + '"><a>' + ellipsisText + '<\/a><\/li>';
+          html += '<li class="' + classPrefix + '-ellipsis ' + disableClassName + '"><a class="page-link" >' + ellipsisText + '<\/a><\/li>';
 
           if (attributes.showLastOnEllipsisShow) {
-            html += '<li class="' + classPrefix + '-page ' + classPrefix + '-last J-paginationjs-page" data-num="' + totalPage + '"><a href="' + pageLink + '">' + totalPage + '<\/a><\/li>';
+            html += '<li class="' + classPrefix + '-page ' + classPrefix + '-last J-paginationjs-page " data-num="' + totalPage + '"><a class="page-link"  href="' + pageLink + '">' + totalPage + '<\/a><\/li>';
           }
         }
+        html += '<li class="page-item-total">of '+ totalPage +'</li>';
 
         return html;
       },
@@ -246,6 +247,8 @@
         var header = $.isFunction(attributes.header) ? attributes.header(currentPage, totalPage, totalNumber) : attributes.header;
         var footer = $.isFunction(attributes.footer) ? attributes.footer(currentPage, totalPage, totalNumber) : attributes.footer;
 
+        if (totalPage == 1 || totalPage == 0) return;
+        else 
         // Whether to display header
         if (header) {
           formattedString = self.replaceVariables(header, {
@@ -257,7 +260,7 @@
         }
 
         if (showPrevious || showPageNumbers || showNext) {
-          html += '<div class="paginationjs-pages">';
+          //html +='<nav aria-label="Page navigation">';
 
           if (ulClassName) {
             html += '<ul class="' + ulClassName + '">';
@@ -269,10 +272,20 @@
           if (showPrevious) {
             if (currentPage <= 1) {
               if (!autoHidePrevious) {
-                html += '<li class="' + classPrefix + '-prev ' + disableClassName + '"><a>' + prevText + '<\/a><\/li>';
+                html += `<li class="page-item page-item-prev ${disableClassName}">
+                          <a class='page-link' href='' aria-label='Previous' tabindex='-1' aria-disabled='true'>
+                            ${prevText}
+                          </a>
+                        </li>`;
               }
             } else {
-              html += '<li class="' + classPrefix + '-prev J-paginationjs-previous" data-num="' + (currentPage - 1) + '" title="Previous page"><a href="' + pageLink + '">' + prevText + '<\/a><\/li>';
+              html += 
+              `<li class="${classPrefix}-prev J-paginationjs-previous" data-num="${currentPage - 1}" title="Previous page"><a href="' + pageLink + '">' 
+                  <a class='page-link page-link-prev' href='${pageLink}' aria-label='Previous'>
+                      ${prevText}
+                  </a>
+                </li>`
+                  //'<li class="' + classPrefix + '-prev J-paginationjs-previous" data-num="' + (currentPage - 1) + '" title="Previous page"><a href="' + pageLink + '">' + prevText + '<\/a><\/li>';
             }
           }
 
@@ -285,13 +298,19 @@
           if (showNext) {
             if (currentPage >= totalPage) {
               if (!autoHideNext) {
-                html += '<li class="' + classPrefix + '-next ' + disableClassName + '"><a>' + nextText + '<\/a><\/li>';
+                html += `<li class='page-item page-item-next ${disableClassName}'>
+                          <a class='page-link' href='' aria-label='Next'>${nextText}</a>
+                        </li>`
+            //'<li class="' + classPrefix + '-next ' + disableClassName + '"><a>' + nextText + '<\/a><\/li>';
               }
             } else {
-              html += '<li class="' + classPrefix + '-next J-paginationjs-next" data-num="' + (currentPage + 1) + '" title="Next page"><a href="' + pageLink + '">' + nextText + '<\/a><\/li>';
+              html += `<li class='page-item page-item-next J-paginationjs-next' data-num=${currentPage + 1} title="Next page">
+                        <a class='page-link page-link-next' href='${pageLink}' aria-label='Next'>${nextText}</a>
+                      </li>`
+              //'<li class="' + classPrefix + '-next J-paginationjs-next" data-num="' + (currentPage + 1) + '" title="Next page"><a href="' + pageLink + '">' + nextText + '<\/a><\/li>';
             }
           }
-          html += '<\/ul><\/div>';
+          html += '<\/ul>'//<\/nav>';
         }
 
         // Whether to display the navigator
@@ -688,7 +707,8 @@
         });
 
         // Page number button click
-        el.delegate('.J-paginationjs-page', 'click', function(event) {
+        el.delegate('.page-item', 'click', function(event) {
+          
           var current = $(event.currentTarget);
           var pageNumber = $.trim(current.attr('data-num'));
 
@@ -698,9 +718,9 @@
           if (self.callHook('beforePageOnClick', event, pageNumber) === false) return false;
 
           self.go(pageNumber);
-
           // After page button clicked
           self.callHook('afterPageOnClick', event, pageNumber);
+          window.scrollTo({top: 0, behavior: 'smooth'});
 
           if (!attributes.pageLink) return false;
         });
@@ -719,6 +739,7 @@
 
           // After previous clicked
           self.callHook('afterPreviousOnClick', event, pageNumber);
+          window.scrollTo({top: 0, behavior: 'smooth'});
 
           if (!attributes.pageLink) return false;
         });
@@ -737,6 +758,7 @@
 
           // After next clicked
           self.callHook('afterNextOnClick', event, pageNumber);
+          window.scrollTo({top: 0, behavior: 'smooth'});
 
           if (!attributes.pageLink) return false;
         });
@@ -752,6 +774,7 @@
 
           // After Go button clicked
           self.callHook('afterGoButtonOnClick', event, pageNumber);
+          window.scrollTo({top: 0, behavior: 'smooth'});
         });
 
         // go input enter
@@ -931,10 +954,10 @@
     pageLink: '',
 
     // 'Previous' text
-    prevText: '&laquo;',
+    prevText: '<span aria-hidden=\'true\'><i class=\'icon-long-arrow-left\'></i></span> Prev',
 
     // 'Next' text
-    nextText: '&raquo;',
+    nextText: 'Next <span aria-hidden=\'true\'><i class=\'icon-long-arrow-right\'></i></span>',
 
     // Ellipsis text
     ellipsisText: '...',
@@ -945,7 +968,7 @@
     // Additional className for Pagination element
     //className: '',
 
-    classPrefix: 'paginationjs',
+    classPrefix: 'page-item',
 
     // Default active class
     activeClassName: 'active',

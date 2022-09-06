@@ -1,11 +1,13 @@
 const baseUrl = 'http://ecommerce.test'
 const currentUrl = window.location.href;
 const DOMelements = {
-    products : document.getElementById('items'),
+    products : document.getElementById('data-container'),
     filters : document.getElementById('filters'),
+
     totalCount : document.getElementById('cartCount'),
     totalPrice : document.getElementById('cart-total-price'),
     productList : document.getElementById("cart_items"),
+    
     header: document.querySelectorAll("header_navs"),
 }
 const api = {
@@ -29,7 +31,7 @@ const init={
                 document.getElementById('header_about').classList.add('show')
             else if (currentUrl.includes('/contact'))
                 document.getElementById('header_contact').classList.add('show')
-            else 
+            else if (document.getElementById('header_index'))
                 document.getElementById('header_index').classList.add('show')
         }
     }
@@ -64,3 +66,4 @@ const helpers = {
                .replaceAll('size', 'sz');
    },
 };
+$("input[type='number']").inputSpinner();

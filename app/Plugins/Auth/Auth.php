@@ -6,10 +6,10 @@ namespace Base\Plugins;
 
 use Phalcon\Di\Injectable;
 use Phalcon\Http\Response;
-use App\Backend\Models\FailedLogins;
-use App\Backend\Models\RememberTokens;
-use App\Backend\Models\SuccessLogins;
-use App\Backend\Models\Users;
+use App\Application\Models\FailedLogins;
+use App\Application\Models\RememberTokens;
+use App\Application\Models\SuccessLogins;
+use App\Application\Models\Users;
 
 
 class Auth extends Injectable
@@ -193,7 +193,7 @@ class Auth extends Injectable
         $this->cookies->get('RMU')->delete();
         $this->cookies->get('RMT')->delete();
 
-        return $this->response->redirect('session/login');
+        return $this->response->redirect('users/login');
     }
 
     /**
@@ -227,7 +227,11 @@ class Auth extends Injectable
     {
         return $this->session->get('auth-identity');
     }
-
+    public function getSession()
+    {
+        if ($this->session->get('auth-identity')) return true; 
+        return false;
+    }
     /**
      * Returns the current identity
      *
@@ -238,6 +242,12 @@ class Auth extends Injectable
         $identity = $this->session->get('auth-identity');
         return $identity['name'];
     }
+    public function getId()
+    {
+        $identity = $this->session->get('auth-identity');
+        return $identity['id'];
+    }
+
 
     /**
      * Removes the user identity information from session
@@ -304,6 +314,13 @@ class Auth extends Injectable
         }
 
         return $user;
+    }
+    public function isConnected(){
+
+        if ($this->session->get('auth-identity') !== null) 
+            return true;
+        else 
+            return false;
     }
 
     /**

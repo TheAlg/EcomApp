@@ -47,13 +47,28 @@ $router->addPost('/item/remove',
         'action'     => 'removeItem'
     ]
 );
-$router->addPost('items/shop/add',
+$router->addPost('/item/update', 
     [
         "module"     => "backend",
-        'controller' => 'product',
-        'action'     => 'postItem',
+        'controller' => 'cart', 
+        'action'     => 'updateItem'
     ]
 );
+$router->addPost('/item/shipping/', 
+    [
+        "module"     => "backend",
+        'controller' => 'cart', 
+        'action'     => 'shipping'
+    ]
+);
+$router->add('/item/refresh/', 
+    [
+        "module"     => "backend",
+        'controller' => 'cart', 
+        'action'     => 'refresh'
+    ]
+);
+
 
 //entries
 

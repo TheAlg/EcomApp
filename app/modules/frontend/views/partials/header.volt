@@ -3,7 +3,7 @@
     <div class="header-middle">
         <div class="container">
             <div class="header-center">
-                <a href="index.html" class="logo">
+                <a href="/" class="logo">
                     <img src="/assets/images/demos/demo-2/logo.png" alt="Molla Logo" width="105" height="25">
                 </a>
             </div>

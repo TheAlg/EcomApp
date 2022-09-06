@@ -83,12 +83,12 @@
                                                             {% endif %}
                                                             <div class="product-action-vertical">
                                                                 <a href="#" class="btn-product-icon btn-wishlist btn-expandable"><span>add to wishlist</span></a>
-                                                                <a href="#" class="btn-product-icon btn-compare" title="Compare"><span>Compare</span></a>
-                                                                <a href="popup/quickView.html" class="btn-product-icon btn-quickview" title="Quick view"><span>Quick view</span></a>
+                                                                <a href="" class="btn-product-icon btn-compare" title="Compare"><span>Compare</span></a>
+                                                                <a href="/item/{{product.id}}" class="btn-product-icon btn-quickview" title="Quick view"><span>Quick view</span></a>
                                                             </div><!-- End .product-action-vertical -->
 
-                                                            <div class="product-action">
-                                                                <a href="#" class="btn-product btn-cart" title="Add to cart"><span>add to cart</span></a>
+                                                            <div class="product-action" type="submit">
+                                                                <a type="submit" class="btn-product btn-cart" id= "{{product.id}}" title="Add to cart"><span>add to cart</span></a>
                                                             </div><!-- End .product-action -->
                                                         </figure><!-- End .product-media -->
 

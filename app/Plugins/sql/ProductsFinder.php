@@ -80,7 +80,9 @@ class ProductsFinder extends \Phalcon\Mvc\Model
         foreach($params as $product){
             $item   = new \StdClass;
             foreach(get_object_vars($product) as $key => $value){
-                $item->$key = $value;
+                if ($key === 'price') $item->$key = number_format($value, 2);
+                else $item->$key = $value;
+
             };
             $item->colors       = $this->fetch(Colors::class, 'color', $product['id']);  
             $item->sizes        = $this->fetch(Sizes::class, 'size', $product['id']);          
@@ -110,6 +112,7 @@ class ProductsFinder extends \Phalcon\Mvc\Model
         $object->sizes = $this->fetch(Sizes::class, 'size');
         return $object;
     }
+    
     public function oldPrice(){
         //query
         $query = new Builder(null, $this->getDi());

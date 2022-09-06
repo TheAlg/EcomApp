@@ -22,43 +22,33 @@ class UsersController extends ControllerBase
         $this->view->singUpForm = $this->registerForm;
         $this->view->loginForm =$this->loginForm;
     }
-    public function indexAction(): void
+    public function indexAction()
     {
+        return true;
     }
     public function loginAction(){
-        //posting login data
-        if ($this->request->isPost() && $this->loginForm->isValid($this->request->getPost())){
-            return $this->dispatcher->forward([
-                'module'     => 'backend',
-                'controller' => 'users',
-                'action'     => 'login',
-            ]);
-        }
         //connecting with remebr me 
-        if (!$this->request->isPost() && $this->auth->hasRememberMe()){
+        if (!$this->request->isPost() && $this->auth->hasRememberMe()) {
             return $this->dispatcher->forward([
                 'module'     => 'backend',
                 'controller' => 'users',
                 'action'     => 'loginWithRememberMe',
             ]);
         }
-        //errors
+      
+        //true : forward to backend
+        if ($this->request->isPost() && $this->loginForm->isValid($this->request->getPost())) 
+            return true;
+        
         foreach ($this->loginForm->getMessages() as $message) {
             $this->direct->error((string) $message);
         }
+
     }
     public function signUpAction(){
-        
+        if ($this->request->isPost() && $this->registerForm->isValid($this->request->getPost())) 
+            return true;
         //valid form 
-        if ($this->request->isPost() && $this->registerForm->isValid($this->request->getPost())) {
-                // success
-                return $this->dispatcher->forward([
-                    'module'     => 'backend',
-                    'controller' => 'users',
-                    'action'     => 'signUp',
-                ]);
-            }
-        //failed
         foreach ($this->registerForm->getMessages() as $message) {
             $this->direct->error((string) $message);
         }
@@ -78,6 +68,10 @@ class UsersController extends ControllerBase
         }
 
     }
+    public function logoutAction(){
+        return true;
+    }
+
     public function error404Action()
     {
         $this->simpleView->partial("404");

@@ -12,7 +12,6 @@ use Phalcon\Di\Injectable;
 use Vokuro\Models\Profiles;
 
 /**
- * Vokuro\Acl\Acl
  */
 class Acl extends Injectable
 {

@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace App\Forms;;
+namespace App\Forms;
 
 use Phalcon\Forms\Element\Check;
 use Phalcon\Forms\Element\Hidden;
