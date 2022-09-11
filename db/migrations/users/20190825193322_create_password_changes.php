@@ -17,7 +17,7 @@ final class CreatePasswordChanges extends AbstractMigration
         $table->addColumn('usersId', 'integer')
             ->addColumn('ipAddress', 'char', ['limit' => 15])
             ->addColumn('userAgent', 'text')
-            ->addColumn('createdAt', 'integer')
+            ->addColumn('create_date', 'datetime', ['default' => date('Y-m-d H:i:s')])
             ->addIndex(['usersId'])
             ->create();
     }
