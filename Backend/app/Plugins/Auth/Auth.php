@@ -10,76 +10,81 @@ use App\Application\Models\FailedLogins;
 use App\Application\Models\RememberTokens;
 use App\Application\Models\SuccessLogins;
 use App\Application\Models\Users;
+use Phalcon\Messages\Messages;
+use Phalcon\Messages\Message;
+
 
 
 class Auth extends Injectable
 {
-    /**
-     * Checks the user credentials
-     *
-     * @param array $credentials
-     *
-     * @throws Exception
-     */
-    public function check($credentials)
+
+    public Messages $errors ;
+
+    public bool $userExists = false;
+    public bool $userClear = true;
+    public bool $savedLogin = false;
+
+    public Message $notFound;
+    public Message $suspended;
+    public Message $banned;
+    public Message $deActivated;
+
+    public function __construct(){
+
+        $this->errors = new Messages();
+        $this->notFound = new Message('Wrong email/password combination', 'user');
+        $this->deActivated  = new Message('The user is inactive', 'user');
+        $this->suspended =  new Message('The user is suspended', 'user');
+        $this->banned =new Message('The user is banned', 'user');
+    }
+
+    public function check($credentials) : bool
     {
         // Check if the user exist
         $user = Users::findFirstByEmail($credentials['email']);
-        if ($user == false) {
-            $this->registerUserThrottling(0);
-            throw new Exception('Wrong email/password combination');
-        }
 
-        // Check the password
-        if (!$this->security->checkHash($credentials['password'], $user->password)) {
-            $this->registerUserThrottling($user->id);
-            throw new Exception('Wrong email/password combination');
+        // check if user exists
+        if ($user == true && $this->security->checkHash($credentials['password'], $user->password)){
+            $this->userExists = true;
+        } 
+        else {
+            $id = ($user == true) ? $user->id : 0;
+            $this->registerUserThrottling($id);
+            $this->handleError($this->notFound);
+            return false;
         }
-
         // Check if the user was flagged
-        $this->checkUserFlags($user);
+        if (!$this->userFlagged($user))
+            return $this->userClear = false;
 
         // Register the successful login
-        $this->saveSuccessLogin($user);
+        if (!$this->saveSuccessLogin($user))
+            return $this->savedLogin = false;
 
         // Check if the remember me was selected
-        if (isset($credentials['remember'])) {
+        if (isset($credentials['rememberMe'])) {
             $this->createRememberEnvironment($user);
         }
 
-        $this->session->set('auth-identity', [
-            'id'      => $user->id,
-            'name'    => $user->name,
-            'profile' => $user->profile->name,
-        ]);
+        //log the user
+        $this->authUserById($user->id);
+        return true;
     }
 
-    /**
-     * Creates the remember me environment settings the related cookies and
-     * generating tokens
-     *
-     * @param Users $user
-     *
-     * @throws Exception
-     */
-    public function saveSuccessLogin($user)
+    public function saveSuccessLogin($user) : bool
     {
         $successLogin            = new SuccessLogins();
         $successLogin->usersId   = $user->id;
         $successLogin->ipAddress = $this->request->getClientAddress();
         $successLogin->userAgent = $this->request->getUserAgent();
         if (!$successLogin->save()) {
-            $messages = $successLogin->getMessages();
-            throw new Exception($messages[0]);
+            $this-handleError($successLogin->getMessages());
+            return false;
         }
+        return true;
     }
 
-    /**
-     * Implements login throttling
-     * Reduces the effectiveness of brute force attacks
-     *
-     * @param int $userId
-     */
+
     public function registerUserThrottling($userId)
     {
         $failedLogin            = new FailedLogins();
@@ -92,7 +97,7 @@ class Auth extends Injectable
             'ipAddress = ?0 AND attempted >= ?1',
             'bind' => [
                 $this->request->getClientAddress(),
-                time() - 3600 * 6,
+                time() - 3600 * 6, //attempts on the last 6 hours
             ],
         ]);
 
@@ -111,12 +116,7 @@ class Auth extends Injectable
         }
     }
 
-    /**
-     * Creates the remember me environment settings the related cookies and
-     * generating tokens
-     *
-     * @param Users $user
-     */
+
     public function createRememberEnvironment(Users $user)
     {
         $userAgent = $this->request->getUserAgent();
@@ -134,22 +134,11 @@ class Auth extends Injectable
         }
     }
 
-    /**
-     * Check if the session has a remember me cookie
-     *
-     * @return boolean
-     */
     public function hasRememberMe()
     {
         return $this->cookies->has('RMU');
     }
 
-    /**
-     * Logs on using the information in the cookies
-     *
-     * @return Response
-     * @throws Exception
-     */
     public function loginWithRememberMe()
     {
         $userId      = $this->cookies->get('RMU')->getValue();
@@ -172,10 +161,10 @@ class Auth extends Injectable
                     // Check if the cookie has not expired
                     if (((time() - $remember->createdAt) / (86400 * 8)) < 8) {
                         // Check if the user was flagged
-                        $this->checkUserFlags($user);
+                        $this->userFlagged($user);
 
                         // Register identity
-                        $this->session->set('auth-identity', [
+                        $this->session->set('auth', [
                             'id'      => $user->id,
                             'name'    => $user->name,
                             'profile' => $user->profile->name,
@@ -196,62 +185,34 @@ class Auth extends Injectable
         return $this->response->redirect('users/login');
     }
 
-    /**
-     * Checks if the user is banned/inactive/suspended
-     *
-     * @param Users $user
-     *
-     * @throws Exception
-     */
-    public function checkUserFlags(Users $user)
+    public function userFlagged(Users $user) : bool
     {
         if ($user->active != 'Y') {
-            throw new Exception('The user is inactive');
+            $this->handleError($this->deActivated);
+            //do something
         }
 
         if ($user->banned != 'N') {
-            throw new Exception('The user is banned');
+            $this->handleError($this->banned);
+            return false;
         }
-
         if ($user->suspended != 'N') {
-            throw new Exception('The user is suspended');
+            $this->handleError($this->suspended);
+            return false;
         }
+        return true;
     }
 
-    /**
-     * Returns the current identity
-     *
-     * @return array|null
-     */
-    public function getIdentity()
+    public function getErrors(): \stdClass
     {
-        return $this->session->get('auth-identity');
-    }
-    public function getSession()
-    {
-        if ($this->session->get('auth-identity')) return true; 
-        return false;
-    }
-    /**
-     * Returns the current identity
-     *
-     * @return string
-     */
-    public function getName()
-    {
-        $identity = $this->session->get('auth-identity');
-        return $identity['name'];
-    }
-    public function getId()
-    {
-        $identity = $this->session->get('auth-identity');
-        return $identity['id'];
+        $message = new \stdClass();
+        foreach($this->errors as $errorMessage){
+            $field = $errorMessage->getField();
+            $message->$field = $errorMessage->getMessage();
+        }
+        return $message;
     }
 
-
-    /**
-     * Removes the user identity information from session
-     */
     public function remove()
     {
         if ($this->cookies->has('RMU')) {
@@ -268,60 +229,36 @@ class Auth extends Injectable
             $this->cookies->get('RMT')->delete();
         }
 
-        $this->session->remove('auth-identity');
+        $this->session->remove('auth');
     }
 
-    /**
-     * Auths the user by his/her id
-     *
-     * @param int $id
-     *
-     * @throws Exception
-     */
-    public function authUserById($id)
+    public function authUserById($id) : bool
     {
         $user = Users::findFirstById($id);
-        if ($user == false) {
-            throw new Exception('The user does not exist');
-        }
+        if (!$user) 
+            return false;
 
-        $this->checkUserFlags($user);
-
-        $this->session->set('auth-identity', [
+       $this->session->set('auth', [
             'id'      => $user->id,
-            'name'    => $user->name,
+            'name'    => $user->firstName,
             'profile' => $user->profile->name,
         ]);
+
+        return true;
     }
 
-    /**
-     * Get the entity related to user in the active identity
-     *
-     * @return Users
-     * @throws Exception
-     */
-    public function getUser()
-    {
-        $identity = $this->session->get('auth-identity');
 
-        if (!isset($identity['id'])) {
-            throw new Exception('Session was broken. Try to re-login');
-        }
+    public function getSession()
+    {
+        $identity = $this->session->get('auth');
+        
+        if (!isset($identity)) 
+            return false;
 
         $user = Users::findFirstById($identity['id']);
-        if ($user == false) {
-            throw new Exception('The user does not exist');
-        }
-
-        return $user;
+        return !$user ? false : $identity;
     }
-    public function isConnected(){
 
-        if ($this->session->get('auth-identity') !== null) 
-            return true;
-        else 
-            return false;
-    }
 
     /**
      * Returns the current token user
@@ -360,4 +297,14 @@ class Auth extends Injectable
             $user->delete();
         }
     }
+    public function handleError(Messages | Message $messages) : void
+    {
+        if (is_a($messages,'Phalcon\Messages\Message'))
+            $this->errors->appendMessage($messages);
+        else
+        foreach ($messages as $message){
+            $this->errors->appendMessage($message);
+        }
+    }
+
 }

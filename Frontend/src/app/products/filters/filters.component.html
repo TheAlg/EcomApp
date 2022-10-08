@@ -1,0 +1,97 @@
+
+<mat-divider class="mt-3 mt-5"></mat-divider>
+
+<mat-accordion class="" multi>
+    <mat-expansion-panel [expanded]="true" class="m-2">
+        <mat-expansion-panel-header>
+        <mat-panel-title>
+            <h1 class="">Filters</h1>
+        </mat-panel-title>
+        </mat-expansion-panel-header>
+
+        <mat-tree [dataSource]="filtersData" [treeControl]="treeControl">
+
+        <!-- This is the tree node template for leaf nodes -->
+        <mat-tree-node class="ms-3 color-case" 
+        *matTreeNodeDef="let node" 
+        matTreeNodePadding>
+        
+        <div *ngIf="node.parent.name == 'Colors' ;then colorTemplate else checkBoxTemplate "></div>
+
+        <!-- use a disabled button to provide padding for tree leaf -->
+            <ng-template #checkBoxTemplate>
+                <button mat-icon-button disabled></button>
+                <p><mat-checkbox formControlName=""  
+                (click)="selectFilter(node.name,node.parent.name); updateProducts()"> 
+
+                {{node.name}} 
+
+                </mat-checkbox></p>
+            </ng-template>
+
+            <ng-template #colorTemplate >
+                <div class="filter-colors" 
+                (click)="selectFilter(node.name,node.parent.name); updateProducts()">
+                <a class='colors' [class.selected]="selectedFilters['Colors[]'] && selectedFilters['Colors[]'].includes(node.name)" 
+                                    [ngStyle]="{'background': node.name}">
+                    <span class='sr-only'></span></a>
+                </div>
+            </ng-template>
+
+
+        </mat-tree-node>
+
+
+        <!-- This is the tree node template for expandable nodes -->
+        <mat-nested-tree-node  *matTreeNodeDef="let node; when: hasChild">
+            <div class="mat-tree-node">
+            <button mat-icon-button matTreeNodeToggle [attr.aria-label]="'Toggle ' + node.name">
+                <mat-icon class="mat-icon-rtl-mirror">
+                {{treeControl.isExpanded(node) ? 'expand_more' : 'chevron_right'}}
+                </mat-icon>
+            </button>
+            {{node.name}}
+            </div>
+            <!-- There is inline padding applied to this div using styles.
+                This padding value depends on the mat-icon-button width.  -->
+            <div [ngClass]="{'d-flex flex-wrap' : node.name ==='Colors' && treeControl.isExpanded(node)}" role="group"
+                [class.invisible-tree]="!treeControl.isExpanded(node)">
+            <ng-container matTreeNodeOutlet>
+
+            </ng-container>
+
+
+            </div>
+        </mat-nested-tree-node>
+
+    
+
+        </mat-tree>
+
+    </mat-expansion-panel>
+
+    <mat-expansion-panel [expanded]="true" class="m-2"> 
+        <mat-expansion-panel-header>
+            <mat-panel-title>
+            <h1 class="">Prices</h1>
+            </mat-panel-title>
+        </mat-expansion-panel-header>
+        <div class="">
+            <p class="d-flex justify-content-center"> Set a price limit  </p>
+        </div>
+        <label id="" class=""> price</label>
+        <label class=""></label>
+        <mat-slider
+            thumbLabel
+            [displayWith]="formatLabel"
+            tickInterval="5"
+            step="20"
+            min="0"
+            max="1000"
+            (change)="updateMaxPrice($event);updateProducts();"
+            aria-label="units">
+            </mat-slider>
+    </mat-expansion-panel>
+</mat-accordion>
+
+

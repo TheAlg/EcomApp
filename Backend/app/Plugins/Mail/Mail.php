@@ -47,18 +47,11 @@ class Mail extends Injectable
         return (new Swift_Mailer($transport))->send($message);
     }
 
-    /**
-     * Applies a template to be used in the e-mail
-     *
-     * @param string $name
-     * @param array  $params
-     *
-     * @return string
-     */
     public function getTemplate(string $name, array $params)
     {
         $parameters = array_merge([
-            'publicUrl' => $this->config->application->publicUrl,
+            
+            'publicUrl' =>  $this->config->application->publicUrl,
         ], $params);
 
         return $this->view->getRender('emailTemplates', $name, $parameters, function (View $view) {

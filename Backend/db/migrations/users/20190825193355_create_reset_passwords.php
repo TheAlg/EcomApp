@@ -15,9 +15,9 @@ final class CreateResetPasswords extends AbstractMigration
         }
 
         $table->addColumn('usersId', 'integer')
-            ->addColumn('code', 'integer')
+            ->addColumn('code', 'string')
             ->addColumn('createdAt', 'integer')
-            ->addColumn('modifiedAt', 'integer')
+            ->addColumn('modifiedAt', 'integer',["null" =>true])
             ->addColumn('reset', 'char', ['limit' => 1])
             ->addIndex(['usersId'])
             ->create();

@@ -1,14 +1,18 @@
 // This file can be replaced during build by using the `fileReplacements` array.
-// `ng build` replaces `environment.ts` with `environment.prod.ts`.
+// `ng build --prod` replaces `environment.ts` with `environment.prod.ts`.
 // The list of file replacements can be found in `angular.json`.
-import { DEFAULT_CONFIG } from '../config/default/default';
-
 
 export const environment = {
-  production: false,
-  apiEndpoint: 'http://localhost:3000/',
-  appName: DEFAULT_CONFIG.appName,
-  config: DEFAULT_CONFIG
+  firebase: {
+    projectId: 'angularecomm2-86f87',
+    appId: '1:188885037441:web:022471964097a84807f880',
+    storageBucket: 'angularecomm2-86f87.appspot.com',
+    locationId: 'europe-west',
+    apiKey: 'AIzaSyBDHXOlHWGi1NgdfPy_CTbIwVx72gTpK30',
+    authDomain: 'angularecomm2-86f87.firebaseapp.com',
+    messagingSenderId: '188885037441',
+  },
+  production: false
 };
 
 /*

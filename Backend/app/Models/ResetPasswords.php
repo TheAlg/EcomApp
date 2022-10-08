@@ -14,34 +14,16 @@ use Phalcon\Mvc\Model;
  */
 class ResetPasswords extends Model
 {
-    /**
-     * @var integer
-     */
     public $id;
 
-    /**
-     * @var integer
-     */
     public $usersId;
 
-    /**
-     * @var string
-     */
     public $code;
 
-    /**
-     * @var integer
-     */
     public $createdAt;
 
-    /**
-     * @var integer
-     */
     public $modifiedAt;
 
-    /**
-     * @var string
-     */
     public $reset;
 
     public function initialize()
@@ -51,21 +33,20 @@ class ResetPasswords extends Model
         ]);
     }
 
-    /**
-     * Before create the user assign a password
-     */
     public function beforeValidationOnCreate()
     {
         // Timestamp the confirmation
         $this->createdAt = time();
 
         // Generate a random confirmation code
-        $this->code = preg_replace('/[^a-zA-Z0-9]/', '', base64_encode(openssl_random_pseudo_bytes(24)));
+        $this->code = preg_replace('/[^a-zA-Z0-9]/', '', \base64_encode(\openssl_random_pseudo_bytes(24)));
 
         // Set status to non-confirmed
         $this->reset = 'N';
-    }
 
+        $this->modifiedAt = time();
+
+    }
     /**
      * Sets the timestamp before update the confirmation
      */
@@ -82,11 +63,11 @@ class ResetPasswords extends Model
     {
         $this->getDI()
              ->getMail()
-             ->send([
-                 $this->user->email => $this->user->name,
-             ], "Reset your password", 'reset', [
-                 'resetUrl' => '/reset-password/' . $this->code . '/' . $this->user->email,
-             ])
+             ->send(
+                [ $this->user->email => $this->user->firstName], //to
+                "Reset your password", //subject
+                'reset', //name
+                ['resetUrl' => '/check-request/resetPassword/' . $this->code . '/' . $this->user->email]) //params
         ;
     }
 }

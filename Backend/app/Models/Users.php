@@ -13,52 +13,31 @@ use Phalcon\Filter\Validation\Validator\Uniqueness;
  */
 class Users extends Model
 {
-    /**
-     * @var integer
-     */
+
     public $id;
 
-    /**
-     * @var string
-     */
-    public $name;
+    public $firstName;
 
-    /**
-     * @var string
-     */
+    public $lastName;
+
+    public $userName;
+
     public $email;
 
-    /**
-     * @var string
-     */
     public $password;
 
-    /**
-     * @var string
-     */
     public $mustChangePassword;
 
-    /**
-     * @var string
-     */
     public $profilesId;
 
-    /**
-     * @var string
-     */
     public $banned;
 
-    /**
-     * @var string
-     */
     public $suspended;
 
-    /**
-     * @var string
-     */
     public $active='Y';
     
     public $createdAt;
+    
     public $updatedAt;
 
     public function initialize()

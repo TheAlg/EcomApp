@@ -21,29 +21,30 @@ class SignUpForm extends Form
      * @param null $entity
      * @param array $options
      */
-    public function initialize($entity = null, array $options = [])
+    public function initialize()
     {
-        $name = new Text('register_name',
-        [
-            //"required" => true,
-            "placeholder" => "Votre Nom"
-        ]
-        );
-        $name->setLabel('Name');
-        $name->addValidators([
+        $firstName = new Text('firstName');
+        $firstName->addValidators([
             new PresenceOf([
-                'message' => 'The name is required',
+                'message' => 'First Name is required',
             ]),
         ]);
 
-        $this->add($name);
-
-        // Email
-        $email = new Text('register_email',        [
-            //"required" => true,
-            "placeholder" => "Email Address"
+        $lastName = new Text('lastName');
+        $lastName->addValidators([
+            new PresenceOf([
+                'message' => 'Last Name is required',
+            ]),
         ]);
-        $email->setLabel('E-Mail');
+        
+        $userName = new Text('userName');
+        $userName->addValidators([
+            new PresenceOf([
+                'message' => 'Username is required',
+            ]),
+        ]);
+
+        $email = new Text('email');
         $email->addValidators([
             new PresenceOf([
                 'message' => 'The e-mail is required',
@@ -53,82 +54,21 @@ class SignUpForm extends Form
             ]),
         ]);
 
-        $this->add($email);
-
-        // Password
-        $password = new Password('register_password', [
-            //"required" => true,
-            "placeholder" => "Password"
-        ]);
-        $password->setLabel('Password');
+        $password = new Password('password');
         $password->addValidators([
             new PresenceOf([
                 'message' => 'The password is required',
             ]),
             new StringLength([
-                'min'            => 8,
-                'messageMinimum' => 'Password is too short. Minimum 8 characters',
+                'min'            => 5,
+                'messageMinimum' => 'Password is too short. Minimum 5 characters',
             ]),
         ]);
 
+        $this->add($firstName);
+        $this->add($lastName);
+        $this->add($email);
         $this->add($password);
-
-        // Confirm Password
-        $confirmPassword = new Password('register_confirmPassword', [
-            //"required" => true,
-            "placeholder" => "Confirm Password"
-        ]);
-        $confirmPassword->setLabel('Confirm Password');
-        $confirmPassword->addValidators([
-            new PresenceOf([
-                'message' => 'The confirmation password is required',
-            ]),
-            new Confirmation([
-                'message' => "confirmation doesn't match password",
-                'with'    => 'register_password',
-            ]),
-        ]);
-
-        $this->add($confirmPassword);
-
-        // Remember
-        $terms = new Check('register_terms', [
-            'value' => 'yes',
-        ]);
-
-        $terms->setLabel('Accept terms and conditions');
-        $terms->addValidator(new Identical([
-            'value'   => 'yes',
-            'message' => 'Terms and conditions must be accepted',
-        ]));
-
-        $this->add($terms);
-
-        // CSRF
-        $csrf = new Hidden('register_token');
-        $csrf->addValidator(new Identical([
-            'value'   => $this->security->getRequestToken(),
-            'message' => 'CSRF validation failed',
-        ]));
-        $csrf->clear();
-
-        $this->add($csrf);
-
-        // Sign Up
-        $this->add(new Submit('Sign Up'));
     }
 
-    /**
-     * Prints messages for a specific element
-     *
-     */
-    public function messages(string $name)
-    {
-        if ($this->hasMessagesFor($name)) {
-            foreach ($this->getMessagesFor($name) as $message) {
-                return $message;
-            }
-        }
-        return '';
-    }
 }

@@ -1,0 +1,34 @@
+@use '@angular/material' as mat;
+
+
+@include mat.core();
+/* ======== Angular material custom themes ======== */  
+
+//A primary palette for the color that appears most frequently throughout your application
+//An accent, or secondary, palette used to selectively highlight key parts of your UI
+//optional : A warn, or error, palette used for warnings and error states
+
+//optional params for define palette function : 1st default, 2nd : lighter, 3rd darker and a text hue
+$primary: mat.define-palette(mat.$blue-palette, 500, A200, A700);
+$accent: mat.define-palette(mat.$blue-palette, A700);
+
+//we define a theme by selecting colors 
+//global theme
+$my-theme: mat.define-light-theme((
+ color: (
+   primary: $primary,
+   accent: $accent,
+    //warn: $my-warn,
+    ),
+));
+// Emit theme-dependent styles for common features used across multiple components.
+//we can specify components if needed :
+@include mat.all-component-themes($my-theme);
+
+.mat-primary {
+ // background-color: mat.get-color-from-palette($accent);
+  //color: material.get-color-from-palette($custom-success, 500-contrast);
+}
+
+
+

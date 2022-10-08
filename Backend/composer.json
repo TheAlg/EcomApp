@@ -1,6 +1,7 @@
 {
     "require": {
         "vlucas/phpdotenv": "^5.4",
-        "robmorgan/phinx": "^0.12.10"
+        "robmorgan/phinx": "^0.12.12",
+        "swiftmailer/swiftmailer": "^6.0"
     }
 }

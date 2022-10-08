@@ -7,8 +7,74 @@ use Phalcon\Mvc\Router;
  * @var $router Router
  */
 
- //api
-$router->addPost('/api/v1/items',
+ //SessionController
+$router->addPost('/auth/addUser',
+[
+    "module"     => "api",
+    'controller' => 'Session',
+    'action'     => 'signUp',        
+]
+);
+$router->addPost('/auth/login',
+[
+    "module"     => "api",
+    'controller' => 'Session',
+    'action'     => 'login',        
+]
+);
+$router->addPost('/auth/forgetPassword',
+[
+    "module"     => "api",
+    'controller' => 'Session',
+    'action'     => 'forgetPassword',        
+]
+);
+$router->addPost('/auth/logout',
+[
+    "module"     => "api",
+    'controller' => 'Session',
+    'action'     => 'logout',        
+]
+);
+$router->addGet('/auth/getCurrentSession', [
+    "module"     => "api",
+    'controller' => 'Session',
+    'action'     => 'getCurrentSession',
+]
+);
+
+//AuthController
+$router->addGet('/auth/securityToken',
+[
+    "module"     => "frontend",
+    'controller' => 'auth',
+    'action'     => 'securityToken',        
+]
+);
+$router->addPost('/auth/confirmEmail', [
+    "module"     => "api",
+    'controller' => 'Auth',
+    'action'     => 'confirmEmail',
+]
+);
+$router->addPost('/auth/resetPassword', [
+    "module"     => "api",
+    'controller' => 'Auth',
+    'action'     => 'resetPassword',
+]
+);
+
+$router->addPost('/auth/changePassword', [
+    "module"     => "api",
+    'controller' => 'Auth',
+    'action'     => 'changePassword',
+]
+);
+
+
+
+ //products
+$router->addGet('/api/v1/items',
     [
         "module"     => "api",
         'controller' => 'product',
@@ -29,7 +95,6 @@ $router->addGet('/api/v1/items/{idproduit:[0-9]+}',
         'action'     => 'getProduct',        
     ]
 );
-//users
 
 
 //cart
@@ -70,14 +135,9 @@ $router->add('/item/refresh/',
 );
 
 
-//entries
 
-/*$router->add('/confirm/{code}/{email}', [
-    'controller' => 'user_control',
-    'action'     => 'confirmEmail',
-]);
 
-$router->add('/reset-password/{code}/{email}', [
-    'controller' => 'user_control',
-    'action'     => 'resetPassword',
-]);*/
+
+
+
+

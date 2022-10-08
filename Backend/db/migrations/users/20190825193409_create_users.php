@@ -14,9 +14,11 @@ class CreateUsers extends AbstractMigration
             return;
         }
         $table = $this->table('users');
-        $table->addColumn('name', 'string', ['limit' => 255])
-            ->addColumn('email', 'string', ['limit' => 255])
-            ->addColumn('password', 'char', ['limit' => 60])
+        $table->addColumn('firstName', 'string', ['limit' => 100])
+            ->addColumn('lastName', 'string', ['limit' => 100, 'null' => true])
+            ->addColumn('userName', 'string', ['limit' => 100, 'null' => true])
+            ->addColumn('email', 'string', ['limit' => 100])
+            ->addColumn('password', 'char', ['limit' => 100])
             ->addColumn('mustChangePassword', 'char', ['limit' => 1])
             ->addColumn('profilesId', 'integer')
             ->addColumn('banned', 'char', ['limit' => 1])

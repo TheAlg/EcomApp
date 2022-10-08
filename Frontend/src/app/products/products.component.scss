@@ -1,0 +1,39 @@
+.mat-card:not([class*=mat-elevation-z]) {
+    width: 280px;
+    height: 430px;
+    overflow:hidden; //cache les cotés qui débordent
+    margin: 13px;
+    border-radius: 14px;
+    padding: 0px;
+}
+.mat-card-image{
+    width: auto;
+}
+.mat-raised-button  {
+    border-top-left-radius: 0px ;
+    border-top-right-radius: 0px ;
+}
+.sidebar {
+  --offset: var(--space);
+  flex-grow: 1;
+  flex-basis: 300px;
+  align-self: start;
+  position: sticky;
+  top: var(--offset);
+}
+
+::ng-deep .mat-drawer-inner-container {
+  overflow-y: scroll;
+  height: 740px;
+}
+mat-slider {
+    width: 210px;
+}
+mat-sidenav{
+    min-width: 300px;
+    max-width: 300px;
+    height: 900px;
+}
+mat-paginator{
+  background-color: #fafafa;
+}

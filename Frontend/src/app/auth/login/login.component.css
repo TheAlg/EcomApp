@@ -1,0 +1,22 @@
+.mat-form-field{
+    display: unset;
+}
+label, .mat-checkbox-layout {
+    display: unset;
+}
+.form-tab .form-footer .custom-control {
+    margin-left: 6rem;
+}
+.nav-link{
+    font-size: 2.4rem;
+}
+.auth-main{
+    margin-top: 50px;
+    margin-bottom: 100px;
+}
+.auth-container {
+    width: 380px;
+    margin-top: 20px;
+    margin-bottom: 20px;
+}
+

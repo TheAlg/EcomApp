@@ -23,7 +23,8 @@ use Base\Providers\DirectProvider;
 use Base\Providers\CartProvider;
 use Base\Providers\ModelsManagerProvider;
 use Base\Providers\ResponseProvider;
-use Base\Providers\ProductsFinderProvider;
+use Base\Providers\modelsBuilderProvider;
+use Base\Providers\formsProvider;
 
 
 
@@ -50,7 +51,8 @@ return [
     ViewProvider::class,
     ModelsManagerProvider::class,
     ResponseProvider::class,
-    ProductsFinderProvider::class
+    modelsBuilderProvider::class,
+    formsProvider::class
 
     
 ];

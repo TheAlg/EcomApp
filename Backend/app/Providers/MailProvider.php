@@ -5,7 +5,7 @@ namespace Base\Providers;
 
 use Phalcon\Di\DiInterface;
 use Phalcon\Di\ServiceProviderInterface;
-use Vokuro\Plugins\Mail\Mail;
+use Base\Plugins\Mail;
 
 class MailProvider implements ServiceProviderInterface
 {

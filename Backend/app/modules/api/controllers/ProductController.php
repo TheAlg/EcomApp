@@ -8,35 +8,23 @@ use Base\App\ControllerBase;
 
 class ProductController extends ControllerBase
 {
-
-    public function indexAction()
-    {
-    }
     
-    public function initialize() 
-    {
-    }
+    public function initialize() {}
+
 
     public function getAllProductsAction() 
     {
-        $this->view->disable();
-        if ($this->request->isPost()){
-            //passing queries 
-            $results= $this->products->set($this->request->getPost())->execute();
-            //sending response
-            $this->response->setContent(json_encode($results))->send(); 
-        }
+        $queryParams = $this->request->getFilteredQuery();
+        return $this->builder->getProducts($queryParams);
     }
 
     public function getAllCategoriesAction() {
-        $this->view->disable();   
-        if ($this->request->isGet()){
-            $results = $this->products->getFilters();
-            $this->response->setContent(json_encode($results))->send();
-        }
+
+        return $this->builder->categories();
+        
     }
 
-    public function postItemAction(){
+    /*public function postItemAction(){
         $this->view->disable();
         $product = new product;
             $product->id = $this->request->getPost('id');
@@ -82,5 +70,5 @@ class ProductController extends ControllerBase
             $id = $this->dispatcher->getParam('idproduit');
             $products = $this->items->findFirst($id);
             $this->view->setVar("data", $products);
-    }
+    }*/
 }

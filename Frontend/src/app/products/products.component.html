@@ -1,0 +1,64 @@
+<mat-sidenav-container class="d-flex bd-highlight overflow-visible">
+
+  <mat-sidenav class="p-3 overflow-visible position-sticky align-self-stexampl" mode="side" opened>
+    <app-filters (productsUpdate)="updateProducts($event)"></app-filters>
+  </mat-sidenav>
+
+  <mat-sidenav-content class="p-2 ms-0">
+
+    <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3 d-flex justify-content-center m-3">
+
+
+      <mat-card class="container col d-flex flex-column" *ngFor="let product of paginatorData">
+      
+        <div class="card-body">
+        <div class="position-relative"> 
+              
+  
+          
+          <img mat-card-image class="m-0" src="{{product.picture}}" alt="">
+
+          <button mat-mini-fab class="float-end position-absolute" color="primary" aria-label="" style="left:80%!important;top:10%!important;">
+            <mat-icon>favorite</mat-icon>
+          </button>
+
+        </div>
+
+            
+            <div class="d-flex justify-content-around pt-3">
+              <h1 class="">{{product.title}} </h1>
+              <h1  class="d-flex align-items-center ">{{product.price}}</h1>
+
+            </div>
+
+            <mat-divider class="mx-3"[inset]="true" ></mat-divider>
+            <h4  class="text-center pt-2"> description +{{product.price}}</h4>
+
+
+
+          </div>
+
+            <div class="d-flex flex-column-reverse">
+              <button mat-raised-button color="primary">Add to card</button>
+              
+        </div>
+
+      </mat-card>
+  
+
+    </div>
+
+    <mat-paginator class="d-flex justify-content-center" 
+        [length]="productsLength"
+        [pageSize]="pageSize" 
+        [pageSizeOptions]="[5, 10, 25, 100]"
+        (page)="onPageChanged($event)"
+        [showFirstLastButtons]="false">
+    
+    </mat-paginator>
+  </mat-sidenav-content>
+   
+</mat-sidenav-container>
+
+
+

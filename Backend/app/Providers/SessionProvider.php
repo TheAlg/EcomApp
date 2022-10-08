@@ -23,14 +23,16 @@ class SessionProvider implements ServiceProviderInterface
     public function register(DiInterface $di): void
     {
         /** @var string $savePath */
-        $savePath = $di->getShared('config')->path('application.sessionSavePath');
+
         $handler  = new SessionAdapter([
-            'savePath' => $savePath,
+            'savePath' => $di->getShared('config')->path('application.sessionSavePath'),
         ]);
 
-        $di->set($this->providerName, function () use ($handler) {
+        $di->setShared($this->providerName, function () use ($handler) {
             $session = new SessionManager();
             $session->setAdapter($handler);
+            $session->setId('session_id');
+
             $session->start();
 
             return $session;

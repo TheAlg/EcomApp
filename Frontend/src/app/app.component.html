@@ -1,32 +1,48 @@
-<ngx-json-ld [json]="schema"></ngx-json-ld>
-<div class="selected-theme">
-  <section>
-    <ng-progress [color]="'red'" [spinner]="false"></ng-progress>
 
-    <app-header
-      *ngIf="currentUrl"
-      [layoutState]="layoutState$ | async"
-    ></app-header>
+<mat-sidenav-container class="example-sidenav-container overflow-visible" >
 
-    <main class="main-body">
-      <router-outlet></router-outlet>
-    </main>
-    <app-footer *ngIf="currentUrl"></app-footer>
-  </section>
-</div>
-<ngx-json-ld [json]="schema"></ngx-json-ld>
-<div class="selected-theme">
-  <section>
-    <ng-progress [color]="'red'" [spinner]="false"></ng-progress>
+    <mat-sidenav #snav [mode]="'over'" [opened]="false" (click)="sidenav.toggle()">
+        <mat-nav-list>
 
-    <app-header
-      *ngIf="currentUrl"
-      [layoutState]="layoutState$ | async"
-    ></app-header>
 
-    <main class="main-body">
-      <router-outlet></router-outlet>
-    </main>
-    <app-footer *ngIf="currentUrl"></app-footer>
-  </section>
-</div>
+            <div mat-subheader class="logo d-flex justify-content-center">SomeLogo</div>
+
+            <mat-divider></mat-divider>
+
+            <a mat-list-item routerLink="">
+                <mat-icon>home</mat-icon> Home 
+            </a>
+            <a mat-list-item routerLink="."> 
+                <mat-icon>favorite</mat-icon>Favoris 
+            </a>
+            <a mat-list-item routerLink="."> 
+                <mat-icon>add_shopping_cart</mat-icon>Panier 
+            </a>
+            <a mat-list-item routerLink="/products"> 
+                <mat-icon>store</mat-icon>Shop 
+            </a>
+
+            <a mat-list-item routerLink="/auth"> 
+                <mat-icon>account_box</mat-icon>Comptes 
+            </a>
+
+            <a mat-list-item routerLink="."> 
+                <mat-icon>contact_support</mat-icon>Contact 
+            </a>
+
+        </mat-nav-list>
+   </mat-sidenav>
+    <mat-sidenav-content class="overflow-visible">
+
+        <app-header></app-header>
+        <router-outlet></router-outlet>
+        <app-footer></app-footer>
+
+        
+    </mat-sidenav-content>
+
+
+</mat-sidenav-container>
+
+
+  

@@ -168,7 +168,7 @@
                 <?php } else { ?>
                 <div class="tab-pane fade active in show" id="signin" role="tabpanel" aria-labelledby="signin-tab">
             <?php } ?>
-                <?= $this->tag->form(['action' => "/users/login", 'method' => "post", 'enctype' => "multipart/form-data"]) ?>
+                <?= \Phalcon\Tag::form(['/users/login', ['method' => 'post', 'enctype' => 'multipart/form-data']]) ?>
                     <!-- username -->
                     <div class="form-group">
                         <?= $loginForm->label('login_email', ['for' => 'login_email']) ?>
@@ -216,42 +216,49 @@
                 <div class="tab-pane fade" id="register" role="tabpanel" aria-labelledby="register-tab">
             <?php } ?>
 
-                <?= $this->tag->form(['action' => "/users/signup", 'method' => "post", 'enctype' => "multipart/form-data"]) ?>
-                    <div class="form-group">
-                        <?= $singUpForm->label('register_name', ['for' => 'register_name']) ?>
-                        <?= $singUpForm->render('register_name', ['class' => 'form-control']) ?>
-                    </div>
-                    <?= $singUpForm->messages('register_name') ?>
-                    <div class="form-group">
-                        <?= $singUpForm->label('register_email', ['for' => 'register_email']) ?>
-                        <?= $singUpForm->render('register_email', ['class' => 'form-control']) ?>
-                    </div>
-                    <?= $singUpForm->messages('register_email') ?>
 
-                    <div class="form-group">
-                        <?= $singUpForm->label('register_password', ['for' => 'register_password']) ?>
-                        <?= $singUpForm->render('register_password', ['class' => 'form-control']) ?>
-                    </div>
-                    <?= $singUpForm->messages('register_password') ?>
 
-                    <div class="form-group">
-                        <?= $singUpForm->label('register_confirmPassword', ['for' => 'register_confirmPassword']) ?>
-                        <?= $singUpForm->render('register_confirmPassword', ['class' => 'form-control']) ?>
-                    </div>
-                    <?= $singUpForm->messages('register_confirmPassword') ?>
-                    <div class="form-footer">
-                        <?= $singUpForm->render('register_token', ['value' => $this->security->getToken()]) ?>                    
-                        <?= $singUpForm->render('Sign Up', ['class' => 'btn btn-primary']) ?>
-                        <span>SIGN UP</span>
-                        <i class="icon-long-arrow-right"></i>
-                        <div class="custom-control custom-checkbox">
-                            <?= $singUpForm->render('register_terms', ['class' => 'custom-control-input', 'id' => 'register_terms']) ?>
-                            <?= $singUpForm->label('register_terms', ['class' => 'custom-control-label', 'for' => 'register_terms']) ?>
-                        </div>
-                        <?= $singUpForm->messages('register_terms') ?>
 
-                    </div>
-                <?= \Phalcon\Tag::endForm() ?>
+
+            <?= \Phalcon\Tag::form(['/users/signup', ['method' => 'post', 'enctype' => 'multipart/form-data']]) ?>
+            <div class="form-group">
+                <?= $singUpForm->label('register_name', ['for' => 'register_name']) ?>
+                <?= $singUpForm->render('register_name', ['class' => 'form-control']) ?>
+            </div>
+            <?= $singUpForm->messages('register_name') ?>
+            <div class="form-group">
+                <?= $singUpForm->label('register_email', ['for' => 'register_email']) ?>
+                <?= $singUpForm->render('register_email', ['class' => 'form-control']) ?>
+            </div>
+            <?= $singUpForm->messages('register_email') ?>
+
+            <div class="form-group">
+                <?= $singUpForm->label('register_password', ['for' => 'register_password']) ?>
+                <?= $singUpForm->render('register_password', ['class' => 'form-control']) ?>
+            </div>
+            <?= $singUpForm->messages('register_password') ?>
+
+            <div class="form-group">
+                <?= $singUpForm->label('register_confirmPassword', ['for' => 'register_confirmPassword']) ?>
+                <?= $singUpForm->render('register_confirmPassword', ['class' => 'form-control']) ?>
+            </div>
+            <?= $singUpForm->messages('register_confirmPassword') ?>
+            <div class="form-footer">
+                <?= $singUpForm->render('register_token', ['value' => $this->security->getToken()]) ?>                    
+                <?= $singUpForm->render('Sign Up', ['class' => 'btn btn-primary']) ?>
+                <span>SIGN UP</span>
+                <i class="icon-long-arrow-right"></i>
+                <div class="custom-control custom-checkbox">
+                    <?= $singUpForm->render('register_terms', ['class' => 'custom-control-input', 'id' => 'register_terms']) ?>
+                    <?= $singUpForm->label('register_terms', ['class' => 'custom-control-label', 'for' => 'register_terms']) ?>
+                </div>
+                <?= $singUpForm->messages('register_terms') ?>
+
+            </div>
+        <?= \Phalcon\Tag::endForm() ?>
+
+
+
                 <div class="form-choice">
                     <p class="text-center">or sign in with</p>
                     <div class="row">

@@ -47,8 +47,6 @@ class ViewProvider implements ServiceProviderInterface
             //cart 
             $view->cart = $di->get('cart');
 
-            //categories
-            $view->departments = $di->get('products')->getFilters()->categories;
             //user
             $userSession = $di->get('session')->get('auth-identity');
             if (isset($userSession) && Users::findFirst($userSession['id']))

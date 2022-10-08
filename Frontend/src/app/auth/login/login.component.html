@@ -1,0 +1,64 @@
+<main class="auth-main">
+    <div class="container d-flex justify-content-center">
+        <mat-card class="auth-container">
+
+            <div class="border-bottom py-3">
+                <mat-card-title class="text-center">
+                    <p class="text-center headline"> Sign In </p>
+                </mat-card-title>
+            </div>
+
+
+            <form [formGroup]="signInForm" class ="px-5 py-3 mb-3 border-bottom" novalidate (ngSubmit)="loginUser(signInForm.value)">
+
+                <mat-form-field class="form-group mb-3">
+                    <input matInput maxlength="25" placeholder="Email" formControlName="email" required>
+                    <mat-error *ngFor="let validation of authErrors.email">
+                        <mat-error class="error-message" *ngIf="signInForm.get('email').hasError(validation.type) 
+                        && (signInForm.get('email').dirty || signInForm.get('email').touched)">{{validation.message}}
+                        </mat-error>
+                    </mat-error>
+                </mat-form-field>
+
+                <mat-form-field class="form-group mb-3">
+                    <input matInput type="password" placeholder="Password" formControlName="password" required>
+                    <mat-error *ngFor="let validation of authErrors.password">
+                        <mat-error class="error-message" *ngIf="signInForm.get('password').hasError(validation.type) 
+                        && (signInForm.get('email').dirty || signInForm.get('password').touched)">{{validation.message}}
+                        </mat-error>
+                    </mat-error>
+                </mat-form-field>
+
+                <div class="container mt-3">
+                    <section class="row">
+                    <div class="col-sm">
+                        <button mat-raised-button color="accent" type="submit" [disabled]="!signInForm.valid">Sign In </button>
+                    </div>
+                    <div class="col-sm d-flex align-content-center flex-wrap">
+                        <mat-checkbox formControlName="rememberMe"> Remember me </mat-checkbox>
+                    </div>
+                    </section>
+                </div>
+            </form>     
+
+
+            <div class="form-choice">
+                <p class="text-center">Don't have an account ?
+                    <a routerLink="/signup" routerLinkActive="active" ariaCurrentWhenActive="page"> Sign Up</a>
+                </p>
+            </div>
+            <div class="form-choice">
+                <p class="text-center">
+                    <a routerLink="/forgotpassword" routerLinkActive="active" ariaCurrentWhenActive="page">Forgot your password ? </a>
+                </p>
+            </div>
+
+    
+                
+        </mat-card>
+    </div>
+</main> 
+            
+             
+
+
