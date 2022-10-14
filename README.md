@@ -2,32 +2,32 @@
 > this is ecommerce app (still under construction) built with angular2, phalcon and mysql
 
 ## run on your local machine
-phalcon : 
-> https://docs.phalcon.io/5.0/fr-fr/installation
-angular :
-``` npm install -g @angular/cli ```
-mysql : 
-> https://dev.mysql.com/downloads/installer/
+phalcon: <br />
+> https://docs.phalcon.io/5.0/fr-fr/installation <br />
+angular:<br />
+``` npm install -g @angular/cli ``` <br />
+mysql<br />
+> https://dev.mysql.com/downloads/installer/<br />
 
-some additional configurations maybe required
+some additional configurations maybe required <br />
 
 ## using Docker
-clone the project
-``` git clone https://github.com/TheAlg/EcomApp.git  && cd EcommApp```
+clone the project <br />
+``` git clone https://github.com/TheAlg/EcomApp.git  && cd EcommApp```<br />
 
-build containers
- ```docker-compose up --buil```
+build containers<br />
+ ```docker-compose up --buil```<br />
 
-run phinx migration
-``` docker-compose exec backend php vendor/bin/phinx migrate ```
+run phinx migration<br />
+``` docker-compose exec backend php vendor/bin/phinx migrate ```<br />
 
-run phinx seed
-``` docker-compose exec backend php vendor/bin/phinx seed:run ``` 
+run phinx seed<br />
+``` docker-compose exec backend php vendor/bin/phinx seed:run ``` <br />
 
-to stop application
-``` docker-compose down ``` 
+to stop application<br />
+``` docker-compose down ``` <br />
 
 ### note
 docker compose might take some time building images
-if so, give it some more time :
+if so, give it some more time: <br />
 ``` export DOCKER_CLIENT_TIMEOUT=120 ```
