@@ -1,4 +1,4 @@
-# The largest heading
+# Ecommerce Application
 > this is ecommerce app (still under construction) built with angular2, phalcon and mysql
 
 ## run on your local machine
