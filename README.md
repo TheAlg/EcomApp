@@ -3,11 +3,13 @@
 
 ## run on your local machine
 phalcon: <br />
-> https://docs.phalcon.io/5.0/fr-fr/installation <br />
+ > https://docs.phalcon.io/5.0/fr-fr/installation <br />
+
 angular:<br />
 ``` npm install -g @angular/cli ``` <br />
-mysql<br />
-> https://dev.mysql.com/downloads/installer/<br />
+
+mysql;<br />
+> https://dev.mysql.com/downloads/installer <br />
 
 some additional configurations maybe required <br />
 
