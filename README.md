@@ -15,7 +15,7 @@ some additional configurations maybe required <br />
 
 ## Run on Docker
 clone the project <br />
-``` git clone https://github.com/TheAlg/EcomApp.git  && cd EcommApp```<br />
+``` git clone https://github.com/TheAlg/EcomApp.git  && cd EcomApp```<br />
 
 build containers<br />
  ```docker-compose up --buil```<br />
