@@ -55,7 +55,7 @@ RUN set -xe && \
 COPY --from=composer /usr/bin/composer /usr/local/bin/composer
 
 COPY . /var/www/html/
-
+RUN mkdir /var/www/html/session
 #composer dependecies
 RUN composer install 
 

@@ -23,7 +23,7 @@ final class UsersSeeder extends AbstractSeed
                 'active' => 'Y',
             ],
             [
-                'id' => 1,
+                'id' => 2,
                 'firstName' => 'test',
                 'lastName' => 'test',
                 'email' => 'test@test.com',
