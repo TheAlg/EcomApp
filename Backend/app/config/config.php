@@ -22,11 +22,9 @@ return [
         'baseUri'         => getenv('APP_BASE_URI'),
         'publicUrl'       => getenv('APP_PUBLIC_URL'),
         'cryptSalt'       => getenv('APP_CRYPT_SALT'),
-        'viewsDir'        => app_path('modules/frontend/views/'),
-        'partialDir'      => app_path('modules/frontend/views/partials/'),
+        'viewsDir'        => app_path('views/'),
         'cacheDir'        => root_path('cache/'),
         'sessionSavePath' => root_path('cache/session/'),
-        'LayoutsDir'      => app_path('modules/frontend/views/layouts/'),
     ],
     'mail'        => [
         'fromName'  => getenv('MAIL_FROM_NAME'),

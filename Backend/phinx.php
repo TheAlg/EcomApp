@@ -21,8 +21,6 @@ return
             'Base\\Seeds\Products' => '%%PHINX_CONFIG_DIR%%/db/seeds/products',
             'Base\\Seeds\Cart' => '%%PHINX_CONFIG_DIR%%/db/seeds/cart',
             'Base\\Seeds\Banner' => '%%PHINX_CONFIG_DIR%%/db/seeds/banners',
-
-
         ],
     ],
     'environments' => [

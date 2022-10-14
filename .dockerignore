@@ -1,0 +1,4 @@
+./Backend/vendor
+./Frontend/node_modules
+.git
+.gitignore

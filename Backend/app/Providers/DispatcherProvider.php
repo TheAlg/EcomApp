@@ -23,8 +23,7 @@ class DispatcherProvider implements ServiceProviderInterface
     {
         $di->set($this->providerName, function () {
             $dispatcher = new Dispatcher();
-            $dispatcher->setDefaultNamespace('App\Frontend\Controllers');
-
+            $dispatcher->setDefaultNamespace('App\Api\Controllers');
             return $dispatcher;
         },
         true

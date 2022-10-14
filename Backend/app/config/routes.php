@@ -8,6 +8,13 @@ use Phalcon\Mvc\Router;
  */
 
  //SessionController
+ $router->addPost('/',
+[
+    "module"     => "api",
+    'controller' => 'product',
+    'action'     => 'getAllProducts',       
+]
+);
 $router->addPost('/auth/addUser',
 [
     "module"     => "api",
@@ -36,12 +43,7 @@ $router->addPost('/auth/logout',
     'action'     => 'logout',        
 ]
 );
-$router->addGet('/auth/getCurrentSession', [
-    "module"     => "api",
-    'controller' => 'Session',
-    'action'     => 'getCurrentSession',
-]
-);
+
 
 //AuthController
 $router->addGet('/auth/securityToken',
@@ -76,7 +78,6 @@ $router->addPost('/auth/changePassword', [
  //products
 $router->addGet('/api/v1/items',
     [
-        "module"     => "api",
         'controller' => 'product',
         'action'     => 'getAllProducts',
     ]

@@ -40,8 +40,6 @@ class Application
         $this->initializeLoader();
         $this->registerModules();
         $this->initializeProviders();
-
-
     }
 
     public function run(): string
@@ -125,9 +123,7 @@ class Application
                 if ($file->isDir() && substr($file->getPathname(), -1) !== '.'){
                     $loaderComponent->addNamespace($namespace, $file->getPathname());
                 }
-
             }
-   
             $loaderComponent->addNamespace($namespace, $path);
         }
         foreach ($loaderFile['files'] as $file){

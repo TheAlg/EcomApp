@@ -102,12 +102,6 @@ class ControllerBase extends Controller
         return false; 
 
 
-        if ($dispatcher->getModuleName() === "frontend" && $returnedValue === true )
-            return $dispatcher->forward([
-                'module' => 'backend',
-                'controller' => $controllerName,
-                'action'     => $actionName,
-            ]);
 
         /*if ($dispatcher->getModuleName() === "backend" && $controllerName === "account" )
             {

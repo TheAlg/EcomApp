@@ -32,13 +32,15 @@ class RouterProvider implements ServiceProviderInterface
             $router = new Router();
 
             $routes = $basePath . '/config/routes.php';
-            if (!file_exists($routes) || !is_readable($routes)) {
-                throw new Exception($routes . ' file does not exist or is not readable.');
-            }
-            $router->setDefaultModule('frontend');
-
+            $router->setDefaultModule('api');
             require_once $routes;
-
+            
+            $router->addGet('/auth/getCurrentSession', [
+                "module"     => "api",
+                'controller' => 'Session',
+                'action'     => 'getCurrentSession',
+            ]
+            );
             return $router;
         });
     }

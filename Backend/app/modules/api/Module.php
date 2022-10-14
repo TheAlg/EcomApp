@@ -18,7 +18,6 @@ class Module implements ModuleDefinitionInterface
     public function registerAutoloaders(DiInterface $di = null)
     {
         $loader = new Loader();
-
         $loader->addNamespace("App\Api\Controllers",BASE_PATH.'/app/modules/api/controllers/');
         $loader->register();
     }
@@ -31,8 +30,7 @@ class Module implements ModuleDefinitionInterface
     public function registerServices(DiInterface $di)
     {
         // Registering a dispatcher
-        return $di->get("dispatcher")->setDefaultNamespace('App\Api\Controllers\\');
-            
+        $di->get("dispatcher")->setDefaultNamespace('App\Api\Controllers\\');
             
     }
 }

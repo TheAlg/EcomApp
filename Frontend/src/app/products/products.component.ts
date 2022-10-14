@@ -1,10 +1,6 @@
-import { NestedTreeControl } from '@angular/cdk/tree';
 import { HttpErrorResponse } from '@angular/common/http';
-import { Target } from '@angular/compiler';
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { MatPaginator, PageEvent } from '@angular/material/paginator';
-import { MatTreeNestedDataSource } from '@angular/material/tree';
-import { Categories } from '../models/Categories';
 import { Product } from '../models/product';
 import { ProductsService } from '../services/products.service';
 

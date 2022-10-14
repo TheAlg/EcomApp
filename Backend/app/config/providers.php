@@ -7,7 +7,6 @@ use Base\Providers\ConfigProvider;
 use Base\Providers\CryptProvider;
 use Base\Providers\DbProvider;
 use Base\Providers\DispatcherProvider;
-use Base\Providers\FlashProvider;
 use Base\Providers\LoggerProvider;
 use Base\Providers\MailProvider;
 use Base\Providers\ModelsMetadataProvider;
@@ -17,9 +16,7 @@ use Base\Providers\SessionBagProvider;
 use Base\Providers\SessionProvider;
 use Base\Providers\UrlProvider;
 use Base\Providers\ViewProvider;
-use Base\Providers\AssetsProvider;
 use Base\Providers\EventsProvider;
-use Base\Providers\DirectProvider;
 use Base\Providers\CartProvider;
 use Base\Providers\ModelsManagerProvider;
 use Base\Providers\ResponseProvider;
@@ -35,7 +32,6 @@ return [
     CryptProvider::class,
     DbProvider::class,
     DispatcherProvider::class,
-    FlashProvider::class,
     LoggerProvider::class,
     MailProvider::class,
     //ModelsMetadataProvider::class,
@@ -45,9 +41,7 @@ return [
     SecurityProvider::class,
     UrlProvider::class,
     CartProvider::class,
-    AssetsProvider::class,
     EventsProvider::class,
-    DirectProvider::class,
     ViewProvider::class,
     ModelsManagerProvider::class,
     ResponseProvider::class,

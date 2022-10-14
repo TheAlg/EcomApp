@@ -1,7 +1,7 @@
 import { HttpClient, HttpErrorResponse, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { Categories } from '../models/Categories';
+import { Categories } from '../models/categories';
 import { Product } from '../models/product';
 
 @Injectable({
@@ -18,13 +18,13 @@ export class ProductsService {
 
   getProducts(queryParams?:HttpParams) : Observable<Product[]>
   {
-    return this.http.get<Product[]>('http://ecommerce.test/api/v1/items', 
+    return this.http.get<Product[]>('http://localhost:8000/api/v1/items', 
                   {params:queryParams,responseType: 'json'})
   }
   
   getCategories() : Observable<Categories[]>
   {
-    return this.http.get<Categories[]>('http://ecommerce.test/api/v1/categories', {responseType: 'json'})
+    return this.http.get<Categories[]>('http://localhost:8000/api/v1/categories', {responseType: 'json'})
 
   }
 }

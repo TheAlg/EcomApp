@@ -10,7 +10,6 @@ return
         "Base\Providers"                =>BASE_PATH.'/app/providers',
         "App\Forms"                     =>BASE_PATH.'/app/Forms',
         "App\Application\Models"        =>BASE_PATH.'/app/Models/',
-        "App\Backend\Controllers"       =>BASE_PATH.'/app/modules/backend/controllers',
 
     ],
     "files" =>[
