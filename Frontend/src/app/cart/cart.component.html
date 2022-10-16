@@ -1,85 +1,96 @@
 <section class="container py-5">
+  <div  *ngIf="cart.count > 0;then notEmptyTemplate else emptyTemplate "></div>
 
-      <div class="row d-flex justify-content-center h-100">
 
-        <div class="col-sm-9">
+        <ng-template #notEmptyTemplate >
+          <div class="row d-flex justify-content-center h-100">
 
-          <div class="card" style="border-radius: 5px;">
-            <div class="card-body p-0">
-                  <div class="p-5">
-                    <div class="row d-flex justify-content-between align-items-center">
-                      <div class="col-md-2">
-                        <img
-                          src="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-shopping-carts/img7.webp"
-                          class="img-fluid rounded-3" alt="Cotton T-shirt">
-                      </div>
-                      <div class="col-md-3">
-                        <h6 class="text-muted">Shirt</h6>
-                        <h6 class="text-black mb-0">Cotton T-shirt</h6>
-                      </div>
-                      <div class="col-md-3">
-                        <button class="btn btn-link px-2"
-                          onclick="this.parentNode.querySelector('input[type=number]').stepDown()">
-                          <i class="fas fa-minus"></i>
-                        </button>
-  
-                        <input id="form1" min="0" name="quantity" value="1" type="number"
-                          class="form-control form-control-sm" />
-  
-                        <button class="btn btn-link px-2"
-                          onclick="this.parentNode.querySelector('input[type=number]').stepUp()">
-                          <i class="fas fa-plus"></i>
-                        </button>
-                      </div>
-                      <div class="col-md-3">
-                        <h6 class="mb-0">€ 44.00</h6>
-                      </div>
-                      <div class="col-md-1">
-                        <a href="#!" class="text-muted"><i class="fas fa-times"></i></a>
-                      </div>
-                    </div>
-                  </div>
-            </div>
-          </div>
-          
-        </div>
-
-        <div class="col-sm-3">
-
-            <div class="card p-5" style="border-radius: 5px; height: auto;">
-                <div class="container card-body p-0">
-                        <div class="">
-                            <h3>Recap</h3>
-
-                                <div class="d-flex justify-content-between">
-                                    <div class="">sous-total</div>
-                                    <div class="">value</div>
-
-                                </div>
-                                <div class="d-flex justify-content-between">
-                                    <div class="">shipping</div>
-                                    <div class="">value</div>
-                                </div>
-                                <div class="d-flex justify-content-between">
-                                    <div class="">TVA</div>
-                                    <div class="">inclus</div>
-                                </div>
-                                <div class="d-flex justify-content-between">
-                                    <div class="">total estimé en gras</div>
-                                    <div class="">value</div>
-                                </div>
-
-                                button checkout
-                    
+            <div class="col-sm-7"> 
+              <mat-card class="card" style="border-radius: 5px;">
+                <div  *ngFor="let product of cart.content | keyvalue; let isLast = last" class="card-body p-0">
+                      <div class="p-5">
+                        <div class="row d-flex justify-content-between align-items-center">
+                          <div class="col-md-3">
+                            <img
+                              src="{{product.value.picture}}"
+                              class="img-fluid rounded-3" alt="Cotton T-shirt">
+                          </div>
+                          <div class="col-md-3">
+                            <h6 class="mat-title">{{product.value.title}}</h6>
+                            <h6 class="mat-caption mb-0">{{product.value.title}}</h6>
+                          </div>
+                          <div class="col-md-3">
+                            <input disabled value="{{product.value.qty}}" class="form-control form-control-sm text-center" />
+    
+                          </div>
+                          <div class="col-md-2">
+                            <h6 class="mat-caption mb-0">€ {{product.value.price}}</h6>
+                          </div>
+                          <div class="col-md-1">
+    
+                            <button (click)="remove(product.value.id)"mat-mini-fab style="transform: scale(1);" >
+                              <mat-icon>delete</mat-icon>
+                            </button>
+    
+                          </div>
                         </div>
+                      </div>
+    
+                      <mat-divider *ngIf="!isLast" class="px-3"></mat-divider>
+    
                 </div>
+              </mat-card>
             </div>
 
-        </div>
+            <div class="col-sm-3" style="width: 350px;">
+    
+                <mat-card class="card mt-3 p-3 d-flex flex-column" style="border-radius: 5px; height: auto;">
+                    <div class="container p-0">
+    
+                      <div class="mat-display-1 text-center">Recap</div>
+    
+                      <ul class="list-group mb-3">
+                        <li class="list-group-item d-flex justify-content-between lh-sm">
+                          <div>
+                            <small class="mat-subheading-2">subtotal</small>
+                          </div>
+                          <span class="mat-subheading-1">$0</span>
+                        </li>
+                        <li class="list-group-item d-flex justify-content-between lh-sm">
+                          <div>
+                            <small class="mat-subheading-2">Shipping fees</small>
+                          </div>
+                          <span class="mat-subheading-1">$0</span>
+                        </li>
+                        <li class="list-group-item d-flex justify-content-between">
+                          <span class="mat-title">Total (USD)</span>
+                          <strong>$ {{cart.total}}</strong>
+                        </li>
+                      </ul>  
+                    </div>
+                
+                    <button mat-raised-button class="my-3" color="accent">Checkout</button>
+                  </mat-card>
+    
+            </div>
+
+          </div>
+        </ng-template>
 
 
+        <ng-template #emptyTemplate >
+          <mat-card class="card" style="padding:0;border-radius: 5px;">
+            <div class="bg-light p-5 rounded">
+              <div class="col-sm-8 py-5 mx-auto text-center">
+                <div class="mat-headline">Votre panier est vide</div>
+                <div class="cart_img"></div>
+                <button [routerLink]="'/products'" mat-raised-button class="my-3" color="accent">Continuer vos achats</button>
+            </div>
+            </div>
+          </mat-card>
 
-      </div>
+        </ng-template>
+
 
 
   </section>

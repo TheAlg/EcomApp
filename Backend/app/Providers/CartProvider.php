@@ -22,7 +22,7 @@ class CartProvider implements ServiceProviderInterface
     public function register(DiInterface $di): void
     {
         $di->setShared($this->providerName, function () use ($di) {
-                return new Cart( $di->getSession(), 'cart');
+                return new Cart($di->getSession());
             }
         );
     }

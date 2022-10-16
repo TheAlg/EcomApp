@@ -99,18 +99,25 @@ $router->addGet('/api/v1/items/{idproduit:[0-9]+}',
 
 
 //cart
-$router->addPost('/item/add', 
+$router->addGet('/cart/get', 
     [
-        "module"     => "backend",
+        "module"     => "api",
+        'controller' => 'cart', 
+        'action'     => 'getCart'
+    ]
+);
+$router->addPost('/cart/add', 
+    [
+        "module"     => "api",
         'controller' => 'cart', 
         'action'     => 'addToCart'
     ]
 );
-$router->addPost('/item/remove', 
+$router->addPost('/cart/remove', 
     [
-        "module"     => "backend",
+        "module"     => "api",
         'controller' => 'cart', 
-        'action'     => 'removeItem'
+        'action'     => 'remove'
     ]
 );
 $router->addPost('/item/update', 

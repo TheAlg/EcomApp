@@ -2,6 +2,7 @@ import { HttpErrorResponse } from '@angular/common/http';
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { MatPaginator, PageEvent } from '@angular/material/paginator';
 import { Product } from '../models/product';
+import { CartService } from '../services/cart.service';
 import { ProductsService } from '../services/products.service';
 
 @Component({
@@ -17,7 +18,10 @@ export class ProductsComponent implements OnInit {
   paginatorData = [];
 
 
-  constructor(protected productsService : ProductsService) {}
+  constructor(
+    protected productsService : ProductsService,
+    protected cartService : CartService
+    ) {}
 
   ngOnInit() {
       this.productsService.getProducts().subscribe({
@@ -41,7 +45,9 @@ export class ProductsComponent implements OnInit {
     this.products = productList
     this.productsLength = productList.length;
     this.paginatorData = this.products.slice(0,this.pageSize);
-}
+  }
+
+
 }
 
 

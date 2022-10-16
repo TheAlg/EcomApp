@@ -9,7 +9,7 @@ use App\Application\Models\Categories;
 use App\Application\Models\Colors;
 use App\Application\Models\Sizes;
 
-class Builder extends \Phalcon\Mvc\Model
+class Builder
 {    
     public $filters =[
         [
@@ -29,8 +29,10 @@ class Builder extends \Phalcon\Mvc\Model
     public $products=[];
     private modelsBuilder $builder;
 
-    public function initialize(){
+    public function __construct()
+    {
         $this->builder = new modelsBuilder();
+
     }
 
 
@@ -52,16 +54,27 @@ class Builder extends \Phalcon\Mvc\Model
         }
         return $this->builder->getQuery()->execute();
     }
+
+    public function findById(int $id)
+    {
+        return $this->builder
+            ->columns(' DISTINCT product.id, title, subtitle, description, name as category, picturePath as picture ,expiry_date, basePrice as price, new, sale, top')
+            ->addFrom(ProductsModel::class,"product")
+            ->join(ProductPricing::class, 'price.productId = product.id', 'price')
+            ->join(Categories::class, 'categoryId = category.id', 'category')
+            ->andWhere('product.id ='. $id)
+            ->getQuery()
+            ->getSingleResult();
+    }
     
     public function categories() // problem maybe in the name of the function 
     {
         foreach($this->filters as $filter){
             array_push($this->selectedFilters, [
                 "name"      => $filter["className"],
-                "children"  =>  $this->modelsManager
-                                    ->createBuilder()
-                                    ->from('App\Application\Models\\'.$filter["className"])
+                "children"  =>  $this->builder
                                     ->columns('distinct ' .$filter["columnName"] .' as name')
+                                    ->from('App\Application\Models\\'.$filter["className"])
                                     ->getQuery()
                                     ->execute()
             ]);
