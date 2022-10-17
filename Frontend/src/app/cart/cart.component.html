@@ -1,4 +1,8 @@
-<section class="container py-5">
+
+<mat-progress-bar *ngIf="!loader" mode="indeterminate"></mat-progress-bar>
+
+<section *ngIf="loader | async" class="container py-5">
+
   <div  *ngIf="cart.count > 0;then notEmptyTemplate else emptyTemplate "></div>
 
 
@@ -6,7 +10,7 @@
           <div class="row d-flex justify-content-center h-100">
 
             <div class="col-sm-7"> 
-              <mat-card class="card" style="border-radius: 5px;">
+              <mat-card *ngIf="loader | async" class="card" style="border-radius: 5px;">
                 <div  *ngFor="let product of cart.content | keyvalue; let isLast = last" class="card-body p-0">
                       <div class="p-5">
                         <div class="row d-flex justify-content-between align-items-center">
@@ -90,7 +94,6 @@
           </mat-card>
 
         </ng-template>
-
 
 
   </section>

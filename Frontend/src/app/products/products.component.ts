@@ -17,6 +17,8 @@ export class ProductsComponent implements OnInit {
   productsLength:number;
   paginatorData = [];
 
+  loader :Promise<boolean>;
+
 
   constructor(
     protected productsService : ProductsService,
@@ -29,6 +31,7 @@ export class ProductsComponent implements OnInit {
           this.products = results
           this.productsLength = results.length;
           this.paginatorData = this.products.slice(0,this.pageSize);
+          this.loader = Promise.resolve(true)
         }),
         error :(e : HttpErrorResponse) => console.error(e.error.text)
       })

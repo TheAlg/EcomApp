@@ -1,7 +1,11 @@
-<mat-sidenav-container class="d-flex bd-highlight overflow-visible">
+<mat-progress-bar *ngIf="!loader" mode="indeterminate"></mat-progress-bar>
+
+<mat-sidenav-container *ngIf="loader | async" class="d-flex bd-highlight overflow-visible">
 
   <mat-sidenav class="p-3 overflow-visible position-sticky align-self-stexampl" mode="side" opened>
+
     <app-filters (productsUpdate)="updateProducts($event)"></app-filters>
+    
   </mat-sidenav>
 
   <mat-sidenav-content class="p-2 ms-0">
@@ -9,7 +13,7 @@
     <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3 d-flex justify-content-center m-3">
 
 
-      <mat-card class="container col d-flex flex-column" *ngFor="let product of paginatorData">
+      <mat-card class="container col d-flex flex-column" *ngFor="let product of paginatorData ">
       
         <div class="card-body">
         <div class="position-relative"> 

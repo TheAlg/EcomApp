@@ -1,5 +1,7 @@
 import { HttpErrorResponse } from '@angular/common/http';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
+import { MatProgressBar } from '@angular/material/progress-bar';
+import { sm } from '../auth/Messages';
 import { CartService } from '../services/cart.service';
 
 @Component({
@@ -11,6 +13,8 @@ export class CartComponent implements OnInit {
 
   constructor( protected cartService : CartService ) { }
 
+  loader: Promise<boolean>;
+
   cart :any ={
     content:[]=[],
   };
@@ -19,11 +23,11 @@ export class CartComponent implements OnInit {
     this.cartService.getContent().subscribe({
       next:((results:any)=>{
         this.cart = results;
+        this.loader = Promise.resolve(true);
       }),
       error :(e : HttpErrorResponse) => console.error(e.error.text)
     })
   }
-
 
   remove(id:number){
     this.cartService.remove(id).subscribe({
