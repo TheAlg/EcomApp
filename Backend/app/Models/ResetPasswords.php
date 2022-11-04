@@ -22,8 +22,6 @@ class ResetPasswords extends Model
 
     public $createdAt;
 
-    public $modifiedAt;
-
     public $reset;
 
     public function initialize()
@@ -43,17 +41,6 @@ class ResetPasswords extends Model
 
         // Set status to non-confirmed
         $this->reset = 'N';
-
-        $this->modifiedAt = time();
-
-    }
-    /**
-     * Sets the timestamp before update the confirmation
-     */
-    public function beforeValidationOnUpdate()
-    {
-        // Timestamp the confirmation
-        $this->modifiedAt = time();
     }
 
     /**

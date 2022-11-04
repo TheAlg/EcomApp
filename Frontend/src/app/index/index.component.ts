@@ -3,7 +3,7 @@ import { FormBuilder, FormGroup, FormControl, Validators } from '@angular/forms'
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { ActivatedRoute, Router } from '@angular/router';
 import { switchMap } from 'rxjs/operators';
-import { PasswordValidator } from '../auth/validators/password.validators';
+import { PasswordValidator } from '../validators/password.validators';
 import { AuthService } from '../services/auth.service';
 
 @Component({
@@ -28,7 +28,7 @@ export class IndexComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.userService.getCurrentSession();
+    //this.userService.getCurrentSession();
 
       //checking if any request exist to auth component
       if ( this.route.snapshot.queryParamMap.get('requestType')) {

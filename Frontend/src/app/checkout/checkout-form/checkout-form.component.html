@@ -1,0 +1,237 @@
+
+<section class="container py-5">
+    <div class="row d-flex justify-content-center h-100">
+        <div class="col-sm-7"> 
+            <mat-card class="card" style="border-radius: 5px;">
+            
+                <mat-stepper labelPosition="bottom"linear #stepper>
+
+                    <mat-step [stepControl]="personalInfoFormGroup"[editable]="true" >
+                        <form [formGroup]="personalInfoFormGroup">
+                            <ng-template matStepLabel>Personnal Information</ng-template>
+                            <mat-list>
+                                <div mat-subheader></div>
+                                <div class="row">
+                                    <div class="col-sm-6">
+                                        <mat-list-item class="">
+                                            <mat-form-field mat-line appearance="outline">
+                                                <mat-label>First name</mat-label>
+                                                <input type="text" matInput formControlName="firstName" placeholder="first name" required>
+
+                                                <mat-error *ngFor="let validation of formErrors.firstName">
+                                                    <mat-error class="error-message" *ngIf="personalInfoFormGroup.get('firstName').hasError(validation.type) 
+                                                    && (personalInfoFormGroup.get('firstName').dirty || personalInfoFormGroup.get('firstName').touched)">
+                                                    {{validation.message}}
+                                                    </mat-error>
+                                                </mat-error>
+
+                                            </mat-form-field>
+                                        </mat-list-item>
+                                    </div>
+                                    <div class="col-sm-6">
+                                        <mat-list-item class="">
+                                            <mat-form-field mat-line appearance="outline">
+                                                <mat-label>Last name</mat-label>
+                                                <input type="text" matInput formControlName="lastName" placeholder="lastname" required>
+
+                                                <mat-error *ngFor="let validation of formErrors.lastName">
+                                                    <mat-error class="error-message" *ngIf="personalInfoFormGroup.get('lastName').hasError(validation.type) 
+                                                    && (personalInfoFormGroup.get('lastName').dirty || personalInfoFormGroup.get('lastName').touched)">
+                                                    {{validation.message}}
+                                                    </mat-error>
+                                                </mat-error>
+                                            </mat-form-field>
+                                        </mat-list-item>
+                                    </div>
+                    
+                                </div>
+
+                                <mat-list-item class="my-5">
+                                    <mat-form-field mat-line appearance="outline">
+                                        <mat-label>Birthday</mat-label>
+                                        <input matInput [matDatepicker]="picker" formControlName="birthday" placeholder="birthday" required>
+                                        <mat-datepicker-toggle matSuffix [for]="picker">
+                                            <mat-icon matDatepickerToggleIcon style="color: black;">date_range</mat-icon>                                  
+                                        </mat-datepicker-toggle>
+                                        <mat-datepicker #picker [startAt]="startDate" ></mat-datepicker>
+
+                                        <mat-error *ngFor="let validation of formErrors.birthday">
+                                            <mat-error class="error-message" *ngIf="personalInfoFormGroup.get('birthday').hasError(validation.type) 
+                                            && (personalInfoFormGroup.get('birthday').dirty || personalInfoFormGroup.get('birthday').touched)">
+                                            {{validation.message}}
+                                            </mat-error>
+                                        </mat-error>
+                                    </mat-form-field>
+                                </mat-list-item>
+                                
+
+                                <div class="row">
+                                    <div class="col-4">
+                                        <mat-list-item>
+                                            <mat-form-field appearance="outline">
+                                                <mat-label>country</mat-label>
+                                                <mat-select formControlName="isoCode">
+                                                    <mat-form-field mat-line class="mx-3">
+                                                        <mat-label>Search</mat-label>
+                                                        <input matInput type="text" placeholder="ex: france" 
+                                                        (keyup)="onKey($event.target.value)">
+                                                    </mat-form-field>
+                                                    <div *ngFor="let country of selectedCountries" >
+                                                        <mat-option 
+                                                        [value]="country.isoCode"
+                                                        (selectionChange)="changePrefix(Value)"> 
+                                                            <img src="{{country.flag}}">
+                                                            {{country.name}} 
+                                                        </mat-option>
+                                                    </div>
+                                                </mat-select>
+                                            </mat-form-field>
+                                        </mat-list-item>
+                                    </div>
+                                    <div class="col-8">
+                                        <mat-list-item>
+                                            <mat-form-field mat-line appearance="outline">
+                                                <mat-label>Phone number</mat-label>
+                                                <input 
+                                                type="text" 
+                                                matInput 
+                                                formControlName="phoneNumber" placeholder="phone number" required>
+                                            </mat-form-field>
+                                        </mat-list-item>
+                                    </div>
+                                </div>
+                            </mat-list>
+                         
+                            <div (click)="checkUser()" class="text-end">
+                                <button mat-raised-button class="my-3"color="accent" [disabled]="!personalInfoFormGroup.valid" matStepperNext style="width: 100px;">Next</button>
+                            </div>
+                        </form>
+
+                    </mat-step>
+
+                    <mat-step [stepControl]="addressFormGroup" [editable]="true">
+                    <form [formGroup]="addressFormGroup">
+                        <ng-template matStepLabel>Fill out your address</ng-template>
+                        <mat-list>
+                            <div mat-subheader></div>
+             
+
+                            <mat-list-item class="my-5">
+                                <mat-form-field mat-line appearance="outline">
+                                    <mat-label>Street</mat-label>
+                                    <input type="text" matInput formControlName="street" placeholder="street name and number" required>
+                                </mat-form-field>
+                            </mat-list-item>
+
+                            <mat-list-item class="my-5">
+                                <mat-form-field mat-line appearance="outline">
+                                    <mat-label>Address Complement</mat-label>
+                                    <input type="text" matInput formControlName="complement" placeholder="">
+                                </mat-form-field>
+                            </mat-list-item>
+
+                            <div class="row">
+                                <div class="col-sm-6">
+                                    <mat-list-item class="">
+                                        <mat-form-field mat-line appearance="outline">
+                                            <mat-label>City</mat-label>
+                                            <input type="text" matInput formControlName="city" placeholder="city name" required>
+                                        </mat-form-field>
+                                    </mat-list-item>
+                                </div>
+                                <div class="col-sm-6">
+                                    <mat-list-item class="">
+                                        <mat-form-field mat-line appearance="outline">
+                                            <mat-label>Post code</mat-label>
+                                            <input type="text" matInput formControlName="postCode" placeholder="post code" required>
+                                        </mat-form-field>
+                                    </mat-list-item>
+                                </div>
+                            </div>
+                        </mat-list>
+
+
+
+                        <div class="d-flex justify-content-between">
+                            <button mat-raised-button class="my-3" color="accent" matStepperNext style="width: 100px;">Back</button>
+                            <button (click)="checkAddress()"mat-raised-button class="my-3" [disabled]="!addressFormGroup.valid" color="accent" matStepperNext style="width: 100px;">Next</button>
+                        </div>
+                    </form>
+                    </mat-step>
+
+                    <mat-step [stepControl]="creditCardFormGroup"[editable]="true" >
+                        <form [formGroup]="creditCardFormGroup">
+                            <ng-template matStepLabel>Personnal Information</ng-template>
+                            <mat-list>
+                                <div mat-subheader></div>
+        
+                                <mat-list-item class="my-5">
+                                    <mat-form-field mat-line appearance="outline">
+                                        <mat-label>Card name</mat-label>
+                                        <input type="text" matInput formControlName="name" placeholder="name" required>
+                                    </mat-form-field>
+                                </mat-list-item>
+
+                                <mat-list-item class="my-5">
+                                    <mat-form-field mat-line appearance="outline">
+                                        <mat-label>Card number</mat-label>
+                                        <input type="text" matInput formControlName="number" placeholder="number" required>
+                                    </mat-form-field>
+                                </mat-list-item>
+
+                                <div class="row">
+                                    <div class="col-sm-6">
+                                        <mat-list-item class="">
+                                            <mat-form-field mat-line appearance="outline">
+                                                <mat-label>Expiry date</mat-label>
+                                                <input matInput [matDatepicker]="pickerTo" formControlName="expiry" placeholder="expiry date" required>
+                                                <mat-hint>MM/DD/YYYY</mat-hint>
+                                                <mat-datepicker-toggle matSuffix [for]="pickerTo">
+                                                    <mat-icon matDatepickerToggleIcon style="color: black;">date_range</mat-icon>                  
+                                                  </mat-datepicker-toggle>
+                                                  <mat-datepicker #pickerTo startView="multi-year" (monthSelected)="datePickerClose($event, pickerTo)"></mat-datepicker>
+                                            </mat-form-field>
+                                        </mat-list-item>
+                                    </div>
+                                    <div class="col-sm-6">
+                                        <mat-list-item class="">
+                                            <mat-form-field mat-line appearance="outline">
+                                                <mat-label>Code</mat-label>
+                                                <input type="text" matInput formControlName="code" placeholder="code" required>
+                                            </mat-form-field>
+                                        </mat-list-item>
+                                    </div>
+                                </div>
+                          
+                            </mat-list>
+                         
+                            <div class="text-end">
+                                <button mat-raised-button class="my-3" color="accent" matStepperBack style="width: 100px;">Back</button>
+                                <button mat-raised-button (click)="checkPayement()"  class="my-3"  color="accent" matStepperNext style="width: 100px;">Next</button>
+                            </div>
+                        </form>
+
+                    </mat-step>
+
+                    <mat-step>
+                    <ng-template matStepLabel>Take the order</ng-template>
+                    <p>a little recap here </p>
+                    <div class="d-flex justify-content-between">
+                        <button mat-raised-button class="my-3" color="accent" matStepperNext style="width: 100px;">Back</button>
+
+                        <div class="text-end">
+                            <button mat-raised-button class="my-3" color="accent" matStepperNext style="width: 100px;">Take the order </button>
+                        </div>
+                    </div>
+                    </mat-step>
+
+
+                </mat-stepper>
+            </mat-card>
+        </div>
+        <div class="col-sm-3" style="width: 350px;">
+
+            <app-checkout-card></app-checkout-card>
+        </div>
+    </div>
+</section>

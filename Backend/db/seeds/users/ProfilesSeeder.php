@@ -13,17 +13,14 @@ final class ProfilesSeeder extends AbstractSeed
             [
                 'id' => 1,
                 'name' => 'Administrators',
-                'active' => 'Y',
             ],
             [
                 'id' => 2,
                 'name' => 'Users',
-                'active' => 'Y',
             ],
             [
                 'id' => 3,
                 'name' => 'Read-Only',
-                'active' => 'Y',
             ],
         ];
 

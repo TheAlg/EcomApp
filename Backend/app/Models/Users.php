@@ -60,6 +60,18 @@ class Users extends Model
                 'message' => 'User cannot be deleted because he/she has activity in the system',
             ],
         ]);
+        $this->hasMany('id', address::class, 'userId', [
+            'alias'      => 'address',
+            'foreignKey' => [
+                'message' => '',
+            ],
+        ]);
+        $this->hasMany('id', payment::class, 'userId', [
+            'alias'      => 'payment',
+            'foreignKey' => [
+                'message' => '',
+            ],
+        ]);
 
         $this->hasMany('id', ResetPasswords::class, 'usersId', [
             'alias'      => 'resetPasswords',

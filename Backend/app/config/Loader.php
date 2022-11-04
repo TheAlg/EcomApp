@@ -8,7 +8,6 @@ return
         "Base\Seeds"                    =>BASE_PATH.'/db/seeds',
         "Base\Plugins"                  =>BASE_PATH.'/app/plugins',
         "Base\Providers"                =>BASE_PATH.'/app/providers',
-        "App\Forms"                     =>BASE_PATH.'/app/Forms',
         "App\Application\Models"        =>BASE_PATH.'/app/Models/',
 
     ],

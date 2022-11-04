@@ -31,16 +31,6 @@ class EmailConfirmations extends Model
     public $code;
 
     /**
-     * @var integer
-     */
-    public $createdAt;
-
-    /**
-     * @var integer
-     */
-    public $modifiedAt;
-
-    /**
      * @var string
      */
     public $confirmed;
@@ -57,23 +47,11 @@ class EmailConfirmations extends Model
      */
     public function beforeValidationOnCreate()
     {
-        // Timestamp the confirmation
-        $this->createdAt = time();
-
         // Generate a random confirmation code
         $this->code = preg_replace('/[^a-zA-Z0-9]/', '', base64_encode(openssl_random_pseudo_bytes(24)));
 
         // Set status to non-confirmed
         $this->confirmed = 'N';
-    }
-
-    /**
-     * Sets the timestamp before update the confirmation
-     */
-    public function beforeValidationOnUpdate()
-    {
-        // Timestamp the confirmation
-        $this->modifiedAt = time();
     }
 
     /**

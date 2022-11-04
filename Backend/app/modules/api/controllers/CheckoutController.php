@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace App\Backend\Controllers;
+namespace App\Api\Controllers;
 use Base\App\ControllerBase;
 use App\Forms\EditUsersForm;
 use App\Forms\ChangeEmailForm;
@@ -14,19 +14,20 @@ use App\Application\Models\creditCard;
 
 class CheckoutController extends ControllerBase
 {
-    public function initialize()
+
+    public function getContentAction()
     {
-        $this->view->disable();
+        return $this->checkout->getContent();
     }
 
-    public function indexAction()
+    public function addAddressAction()
     {
-        $userId = $this->auth->getUser()->id;
-        $checkout = [
-            'isConnected' => $this->auth->isConnected(),
-            'address'     => address::default($userId),
-            'creditCard'  => creditCard::default($userId),
-        ]; 
-       return json_encode($checkout); 
+        return $this->forms->getPost();
     }
+
+    public function addPayementAction()
+    {
+
+    }
+
 }

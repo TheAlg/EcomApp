@@ -106,30 +106,4 @@ class Builder
                 ->inWhere('size', $this->Sizes);
     }
 
-    /*public function oldPrice(){
-    //query
-    $query = new Builder(null, $this->getDi());
-    return $query->columns('basePrice as price')
-            ->addFrom(ProductsModel::class,"product")
-            ->join(ProductPricing::class, 'price.productId = product.id', 'price')
-            ->join(Categories::class, 'categoryId = category.id', 'category')
-            ->andWhere('inActive = \'L\'')
-            ->andWhere('product.id ='. $this->id)
-            ->orderBy('product.id')
-            ->getQuery()
-            ->getSingleResult();
-    }
-
-    public function setQueries(array $params)
-    {
- 
-        //sanitizers
-        $this->id = is_numeric($params['id']) ? $params['id']:null;
-        $this->max= is_numeric($params['maxPrice'])?  $params['maxPrice']:null;
-
-        $this->category = is_array($params['category'])? $params['category']: null;
-        $this->colors = is_array($params['color']) ? $params['color']: null;
-        $this->sizes = is_array($params['size'])?  $params['size']: null;
-        return $this;
-    }*/
 }

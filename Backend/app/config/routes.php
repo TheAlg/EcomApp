@@ -7,71 +7,92 @@ use Phalcon\Mvc\Router;
  * @var $router Router
  */
 
- //SessionController
- $router->addPost('/',
+ //AuthController
+$router->addPost('/auth/signup',
 [
     "module"     => "api",
-    'controller' => 'product',
-    'action'     => 'getAllProducts',       
-]
-);
-$router->addPost('/auth/addUser',
-[
-    "module"     => "api",
-    'controller' => 'Session',
+    'controller' => 'auth',
     'action'     => 'signUp',        
-]
-);
+]);
 $router->addPost('/auth/login',
 [
     "module"     => "api",
-    'controller' => 'Session',
+    'controller' => 'auth',
     'action'     => 'login',        
-]
-);
+]);
 $router->addPost('/auth/forgetPassword',
 [
     "module"     => "api",
-    'controller' => 'Session',
+    'controller' => 'auth',
     'action'     => 'forgetPassword',        
-]
-);
+]);
 $router->addPost('/auth/logout',
 [
     "module"     => "api",
-    'controller' => 'Session',
-    'action'     => 'logout',        
-]
-);
-
-
-//AuthController
-$router->addGet('/auth/securityToken',
-[
-    "module"     => "frontend",
     'controller' => 'auth',
-    'action'     => 'securityToken',        
-]
-);
+    'action'     => 'logout',        
+]);
 $router->addPost('/auth/confirmEmail', [
     "module"     => "api",
     'controller' => 'Auth',
     'action'     => 'confirmEmail',
-]
-);
+]);
 $router->addPost('/auth/resetPassword', [
     "module"     => "api",
     'controller' => 'Auth',
     'action'     => 'resetPassword',
-]
-);
+]);
 
 $router->addPost('/auth/changePassword', [
     "module"     => "api",
     'controller' => 'Auth',
     'action'     => 'changePassword',
-]
-);
+]);
+
+//userControler
+$router->addGet('/user',
+[
+    "module"     => "api",
+    'controller' => 'user',
+    'action'     => 'getSession',        
+]);
+$router->addGet('/user/address',
+[
+    "module"     => "api",
+    'controller' => 'user',
+    'action'     => 'getAddress',        
+]);
+$router->addPost('/user/address',
+[
+    "module"     => "api",
+    'controller' => 'user',
+    'action'     => 'postAddress',        
+]);
+$router->addDelete('/user/address/{id}',
+[
+    "module"     => "api",
+    'controller' => 'user',
+    'action'     => 'deleteAddress', 
+    'id' => 1       
+]);
+$router->addPost('/user/update/', 
+[
+    "module"     => "api",
+    'controller' => 'user', 
+    'action'     => 'update'
+]);
+$router->addGet('/user/payement',
+[
+    "module"     => "api",
+    'controller' => 'user',
+    'action'     => 'getPayement',        
+]);
+$router->addPost('/user/payement',
+[
+    "module"     => "api",
+    'controller' => 'user',
+    'action'     => 'postPayement',        
+]);
 
 
 
@@ -142,6 +163,15 @@ $router->add('/item/refresh/',
     ]
 );
 
+//checkoutController
+
+$router->addGet('/checkout/getcontent/', 
+    [
+        "module"     => "api",
+        'controller' => 'checkout', 
+        'action'     => 'getContent'
+    ]
+);
 
 
 

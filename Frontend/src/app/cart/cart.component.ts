@@ -1,7 +1,5 @@
 import { HttpErrorResponse } from '@angular/common/http';
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { MatProgressBar } from '@angular/material/progress-bar';
-import { sm } from '../auth/Messages';
 import { CartService } from '../services/cart.service';
 
 @Component({

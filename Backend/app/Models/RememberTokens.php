@@ -31,10 +31,6 @@ class RememberTokens extends Model
      */
     public $userAgent;
 
-    /**
-     * @var integer
-     */
-    public $createdAt;
 
     public function initialize()
     {
@@ -43,12 +39,5 @@ class RememberTokens extends Model
         ]);
     }
 
-    /**
-     * Before create the user assign a password
-     */
-    public function beforeValidationOnCreate()
-    {
-        // Timestamp the confirmation
-        $this->createdAt = time();
-    }
+
 }

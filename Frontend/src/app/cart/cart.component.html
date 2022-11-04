@@ -47,35 +47,8 @@
             </div>
 
             <div class="col-sm-3" style="width: 350px;">
-    
-                <mat-card class="card mt-3 p-3 d-flex flex-column" style="border-radius: 5px; height: auto;">
-                    <div class="container p-0">
-    
-                      <div class="mat-display-1 text-center">Recap</div>
-    
-                      <ul class="list-group mb-3">
-                        <li class="list-group-item d-flex justify-content-between lh-sm">
-                          <div>
-                            <small class="mat-subheading-2">subtotal</small>
-                          </div>
-                          <span class="mat-subheading-1">$0</span>
-                        </li>
-                        <li class="list-group-item d-flex justify-content-between lh-sm">
-                          <div>
-                            <small class="mat-subheading-2">Shipping fees</small>
-                          </div>
-                          <span class="mat-subheading-1">$0</span>
-                        </li>
-                        <li class="list-group-item d-flex justify-content-between">
-                          <span class="mat-title">Total (USD)</span>
-                          <strong>$ {{cart.total}}</strong>
-                        </li>
-                      </ul>  
-                    </div>
-                
-                    <button mat-raised-button class="my-3" color="accent">Checkout</button>
-                  </mat-card>
-    
+              <app-checkout-card></app-checkout-card>
+  
             </div>
 
           </div>

@@ -11,6 +11,25 @@ import { ProductsModule } from './products/products.module';
 import { HeaderComponent } from './layout/header/header.component';
 import { FooterComponent } from './layout/footer/footer.component';
 import { CartComponent } from './cart/cart.component';
+import { ReactiveFormsModule } from '@angular/forms';
+import { CheckoutFormComponent } from './checkout/checkout-form/checkout-form.component';
+import { CheckoutCardComponent } from './checkout/checkout-card/checkout-card.component';
+import { DateAdapter, MatNativeDateModule, MAT_DATE_LOCALE, MAT_DATE_FORMATS } from '@angular/material/core';
+//import {MomentDateAdapter, MAT_MOMENT_DATE_ADAPTER_OPTIONS} from '@angular/material-moment-adapter';
+
+// See the Moment.js docs for the meaning of these formats:
+// https://momentjs.com/docs/#/displaying/format/
+export const MY_FORMATS = {
+  parse: {
+    dateInput: 'MM/YYYY',
+  },
+  display: {
+    dateInput: 'MM/YYYY',
+    monthYearLabel: 'MMM YYYY',
+    dateA11yLabel: 'LL',
+    monthYearA11yLabel: 'MMMM YYYY',
+  },
+};
 
 
 @NgModule({
@@ -20,6 +39,8 @@ import { CartComponent } from './cart/cart.component';
     FooterComponent,
     IndexComponent,
     CartComponent,
+    CheckoutCardComponent,
+    CheckoutFormComponent,
   ],
   imports: [
     BrowserModule,
@@ -29,9 +50,21 @@ import { CartComponent } from './cart/cart.component';
     HttpClientModule,
     BrowserAnimationsModule,
     AngularMaterialModule,
+    ReactiveFormsModule,
+    MatNativeDateModule,
   ],
-  providers: [ ],
+  providers: [ 
+    {provide: MAT_DATE_LOCALE, useValue: 'en-GB'},
+    /*{
+      provide: DateAdapter,
+      useClass: MomentDateAdapter,
+      deps: [MAT_DATE_LOCALE, MAT_MOMENT_DATE_ADAPTER_OPTIONS],
+    },*/
+    {provide: MAT_DATE_FORMATS, useValue: MY_FORMATS},
+
+  ],
 
   bootstrap: [AppComponent]
 })
 export class AppModule { }
+

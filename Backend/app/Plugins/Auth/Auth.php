@@ -18,24 +18,12 @@ use Phalcon\Messages\Message;
 class Auth extends Injectable
 {
 
-    public Messages $errors ;
 
-    public bool $userExists = false;
-    public bool $userClear = true;
-    public bool $savedLogin = false;
+    public $messages =[];
 
-    public Message $notFound;
-    public Message $suspended;
-    public Message $banned;
-    public Message $deActivated;
 
     public function __construct(){
 
-        $this->errors = new Messages();
-        $this->notFound = new Message('Wrong email/password combination', 'user');
-        $this->deActivated  = new Message('The user is inactive', 'user');
-        $this->suspended =  new Message('The user is suspended', 'user');
-        $this->banned =new Message('The user is banned', 'user');
     }
 
     public function check($credentials) : bool
@@ -44,44 +32,42 @@ class Auth extends Injectable
         $user = Users::findFirstByEmail($credentials['email']);
 
         // check if user exists
-        if ($user == true && $this->security->checkHash($credentials['password'], $user->password)){
+        if ($user && $this->security->checkHash($credentials['password'], $user->password)){
             $this->userExists = true;
         } 
+        //sleep the
         else {
-            $id = ($user == true) ? $user->id : 0;
+            $id = $user ? $user->id : 0;
             $this->registerUserThrottling($id);
-            $this->handleError($this->notFound);
+            array_push($this->messages, 'Wrong email/password combination');
             return false;
         }
         // Check if the user was flagged
         if (!$this->userFlagged($user))
-            return $this->userClear = false;
+            return false;
 
         // Register the successful login
-        if (!$this->saveSuccessLogin($user))
-            return $this->savedLogin = false;
+        $this->saveSuccessLogin($user);
 
         // Check if the remember me was selected
-        if (isset($credentials['rememberMe'])) {
+        /*if (isset($credentials['rememberMe'])) {
             $this->createRememberEnvironment($user);
-        }
+        }*/
 
         //log the user
         $this->authUserById($user->id);
         return true;
     }
 
-    public function saveSuccessLogin($user) : bool
+    public function saveSuccessLogin($user) : void
     {
+        //create the successlogins
         $successLogin            = new SuccessLogins();
-        $successLogin->usersId   = $user->id;
+        $successLogin->userId   = $user->id;
         $successLogin->ipAddress = $this->request->getClientAddress();
         $successLogin->userAgent = $this->request->getUserAgent();
-        if (!$successLogin->save()) {
-            $this-handleError($successLogin->getMessages());
-            return false;
-        }
-        return true;
+        //save
+        $successLogin->save();
     }
 
 
@@ -187,30 +173,15 @@ class Auth extends Injectable
 
     public function userFlagged(Users $user) : bool
     {
-        if ($user->active != 'Y') {
-            $this->handleError($this->deActivated);
-            //do something
-        }
-
         if ($user->banned != 'N') {
-            $this->handleError($this->banned);
+            array_push($this->messages, 'The user is banned');
             return false;
         }
         if ($user->suspended != 'N') {
-            $this->handleError($this->suspended);
+            array_push($this->messages, 'The user is suspended');
             return false;
         }
         return true;
-    }
-
-    public function getErrors(): \stdClass
-    {
-        $message = new \stdClass();
-        foreach($this->errors as $errorMessage){
-            $field = $errorMessage->getField();
-            $message->$field = $errorMessage->getMessage();
-        }
-        return $message;
     }
 
     public function remove()
@@ -239,24 +210,32 @@ class Auth extends Injectable
             return false;
 
        $this->session->set('auth', [
-            'id'      => $user->id,
-            'name'    => $user->firstName,
-            'profile' => $user->profile->name,
+            'id'        => $user->id,
+            'firstName' => $user->firstName,
+            'lastName'  => $user->lastName,
+            'email'     => $user->email,
+            'isoCode'   => $user->isoCode,
+            'birthday'  => strtok($user->birthday, " "),
+            'email'     => $user->email,
+            'phoneNumber'=> $user->phoneNumber,
+            'profile'   => $user->profile->name,
         ]);
 
+        return true;
+    }
+
+    public function hasSession(){
+
+        $user = $this->session->get('auth');
+        if (!isset($user)) 
+            return false;
         return true;
     }
 
 
     public function getSession()
     {
-        $identity = $this->session->get('auth');
-        
-        if (!isset($identity)) 
-            return false;
-
-        $user = Users::findFirstById($identity['id']);
-        return !$user ? false : $identity;
+        return $this->session->get('auth');
     }
 
 
@@ -297,14 +276,11 @@ class Auth extends Injectable
             $user->delete();
         }
     }
-    public function handleError(Messages | Message $messages) : void
+
+
+    public function getMessages():array
     {
-        if (is_a($messages,'Phalcon\Messages\Message'))
-            $this->errors->appendMessage($messages);
-        else
-        foreach ($messages as $message){
-            $this->errors->appendMessage($message);
-        }
+        return $this->messages;
     }
 
 }

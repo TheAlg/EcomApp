@@ -1,7 +1,9 @@
 import { Component, Injector, OnInit } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
-import { User } from 'src/app/models/user';
-import { baseComponent } from '../base.component';
+import { Router } from '@angular/router';
+import { AuthService } from 'src/app/services/auth.service';
+import { FormsService } from 'src/app/services/forms.service';
+import { formErrors } from '../../config/Messages';
 
 @Component({
   selector: 'app-login',
@@ -9,41 +11,55 @@ import { baseComponent } from '../base.component';
   styleUrls: ['./login.component.css']
 })
 
-export class LoginComponent extends baseComponent implements OnInit {
+export class LoginComponent implements OnInit {
 
   
-  signInForm : FormGroup;
-
-  constructor(injectorObj: Injector) {
-    super(injectorObj);
+  signInForm = {
+    email : this.formsProvider.email(),
+    password : this.formsProvider.password(),
+    rememberMe: new FormControl('false')
   }
+  signInFormGroup = this.fb.group(this.signInForm)
+
+  authErrors= formErrors;
+  serverResponse = {
+    error : false,
+    message : ''
+  }
+
+  constructor(
+    private router : Router,
+    private authService : AuthService,
+    private formsProvider : FormsService,
+    private fb : FormBuilder,
+
+  ) {
+  }
+
 
 
   ngOnInit() {
-    this.signInForm = this.createSingInForm();
   }
 
-  loginUser( user: User ){
-    this.userService.signInUser(user);
-  }
-  
-  createSingInForm(){
+  loginUser( user: any ){
+    this.serverResponse.error = false;
+    this.authService.signIn(user).subscribe(
+      (response:any)=>
+      { 
+        if (response.complete){
+          //setting user in observable 
+          //this.authService.setUser(response.user)
+          this.router.navigate(['/products']);
+        }
+        else{
+          this.serverResponse.error = true;
+          this.serverResponse.message = response.message
 
-    // user details form validations
-    return this.fb.group({
-        email: ['', {
-          validators:[
-          Validators.required,
-          Validators.email
-        ],
-        updateOn: 'blur'
-      }],
-        password : new FormControl('', {
-          validators : [Validators.required],
-          updateOn: 'blur'
-      }),
-        rememberMe: new FormControl('false')
-      })
+        }
+      }
+    );
   }
+
 }
+
 

@@ -22,6 +22,7 @@ use Base\Providers\ModelsManagerProvider;
 use Base\Providers\ResponseProvider;
 use Base\Providers\modelsBuilderProvider;
 use Base\Providers\formsProvider;
+use Base\Providers\CheckoutProvider;
 
 
 
@@ -34,7 +35,6 @@ return [
     DispatcherProvider::class,
     LoggerProvider::class,
     MailProvider::class,
-    //ModelsMetadataProvider::class,
     RouterProvider::class,
     SessionBagProvider::class,
     SessionProvider::class,
@@ -46,7 +46,7 @@ return [
     ModelsManagerProvider::class,
     ResponseProvider::class,
     modelsBuilderProvider::class,
-    formsProvider::class
-
+    formsProvider::class,
+    CheckoutProvider::class
     
 ];

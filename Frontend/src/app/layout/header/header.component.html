@@ -4,7 +4,7 @@
 
 
             <button mat-icon-button (click)="toggleMenu()">
-                <mat-icon>menu</mat-icon>
+                <mat-icon style ="transform: scale(1.2);">menu</mat-icon>
             </button>
 
 
@@ -12,14 +12,56 @@
         </div>
         <div class="header-right">
             <span class="example-spacer"></span>
-            <button mat-icon-button class="example-icon favorite-icon" aria-label="Example icon-button with heart icon">
-                <mat-icon>favorite</mat-icon>
+
+            <button *ngIf="this.cartService.isReady() | async" mat-icon-button class="mx-1 example-icon favorite-icon" [routerLink]="'/cart'">
+                <mat-icon style ="transform: scale(1.2);" matBadge="{{Cart.count}}" matBadgeSize="small" matBadgeColor="warn">shopping_cart</mat-icon>            
             </button>
-            <button mat-icon-button class="example-icon" aria-label="Example icon-button with share icon">
-                <mat-icon>share</mat-icon>
+
+            <button mat-icon-button class="mx-1 example-icon favorite-icon">
+                <mat-icon style ="transform: scale(1.2);">favorite</mat-icon>
             </button>
+
+            <button mat-icon-button class="mx-1 example-icon favorite-icon" [matMenuTriggerFor]="belowMenu">
+                <mat-icon style ="transform: scale(1.2);">account_circle</mat-icon>
+            </button>
+       
         </div>
     </mat-toolbar>
 </header>
 
 
+<mat-menu #belowMenu="matMenu" yPosition="below">
+    <mat-selection-list [multiple]="false">
+
+            
+                <div *ngIf="User; else login">
+                    <mat-list-option>
+                        <mat-icon mat-list-icon style ="transform: scale(1.2);">face</mat-icon>
+                        <div mat-line>{{User.email}}</div>
+                        <div mat-line>{{User.firstName}} {{User.lastName}}</div>
+                    </mat-list-option>
+                </div>
+                
+                <ng-template #login>
+                    <mat-list-option>
+                            <mat-icon mat-list-icon class="m-1 p-1"style ="transform: scale(1.2);">person</mat-icon>
+                            Login
+                  
+                    </mat-list-option>
+                </ng-template>
+
+
+      
+
+            <mat-list-option>
+                <mat-icon mat-list-icon style ="transform: scale(1.2);">receipt</mat-icon>
+                Orders
+            </mat-list-option>
+
+            <mat-list-option (click)="logout()">
+                <mat-icon mat-list-icon style ="transform: scale(1.2);">exit_to_app</mat-icon>
+                Logout
+            </mat-list-option>
+
+    </mat-selection-list>
+</mat-menu>

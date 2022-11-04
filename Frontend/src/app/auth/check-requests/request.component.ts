@@ -1,20 +1,18 @@
 import { Component, Injector, OnInit } from '@angular/core';
-import { baseComponent } from '../base.component';
 
 
 @Component({template: '',})
-export class checkRequestsComponent extends baseComponent implements OnInit {
+export class checkRequestsComponent implements OnInit {
 
 
   requests =['resetPassword', 'confirmEmail']
   
   constructor(injectorObj: Injector) {
-    super(injectorObj);
+
   }
-  
 
   ngOnInit(): void {
-  let params = this.route.snapshot.paramMap
+  /*let params = this.route.snapshot.paramMap
 
   if ( this.requests.includes(params.get('requestType'))){
 
@@ -31,7 +29,7 @@ export class checkRequestsComponent extends baseComponent implements OnInit {
           }
         })
     }  
-    this.router.navigate(['']);
+    this.router.navigate(['']);*/
   }
 
 

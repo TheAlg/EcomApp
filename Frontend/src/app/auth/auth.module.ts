@@ -1,4 +1,4 @@
-import { NgModule, OnInit } from '@angular/core';
+import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ReactiveFormsModule } from '@angular/forms';
 import { LoginComponent } from './login/login.component';
@@ -9,6 +9,7 @@ import { AuthService } from '../services/auth.service';
 import { ForgetpasswordComponent } from './forgetpassword/forgetpassword.component';
 import { changePasswordComponent } from './change-password/change-password.component';
 import { AuthRoutingModule } from './auth-routing.module';
+import { UserService } from '../services/user.service';
 
 
 
@@ -28,6 +29,7 @@ import { AuthRoutingModule } from './auth-routing.module';
   ],
   providers: [
     AuthService,
+    UserService,
     //AuthGuard
   ],
 })

@@ -11,7 +11,11 @@ class CartController extends ControllerBase
 
     public function addToCartAction()
     {
-        $data = $this->getPost();
+        $data = $this->forms->getPost(['id']);
+        if (!$data)  {
+        return $this->forms->getMessages();
+        }
+
         return $this->cart->add((int)$data->id);
     }
 
@@ -21,7 +25,7 @@ class CartController extends ControllerBase
     
     public function removeAction() 
     {
-        $data = $this->getPost();
+        $data = $this->forms->getPost(['id']);
         return $this->cart->remove((int)$data->id);
     }
 

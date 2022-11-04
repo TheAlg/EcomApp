@@ -45,5 +45,5 @@ return [
         'filename' => 'application.log',
     ],
     // Set to false to disable sending emails (for use in test environment)
-    'useMail'     => true,
+    'useMail'     => false,
 ];

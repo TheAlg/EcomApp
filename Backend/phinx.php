@@ -10,17 +10,14 @@ return
 [
     'paths' => [
         'migrations' => [
-            'Base\\Migrations\users' => '%%PHINX_CONFIG_DIR%%/db/migrations/users',
-            'Base\\Migrations\products' => '%%PHINX_CONFIG_DIR%%/db/migrations/products',
-            'Base\\Migrations\Cart' => '%%PHINX_CONFIG_DIR%%/db/migrations/cart',
-            'Base\\Migrations\Banner' => '%%PHINX_CONFIG_DIR%%/db/migrations/banners',
+            'Base\\Migrations\Users' => '%%PHINX_CONFIG_DIR%%/db/migrations/users',
+            'Base\\Migrations\Order' => '%%PHINX_CONFIG_DIR%%/db/migrations/orders',
+            'Base\\Migrations\Products' => '%%PHINX_CONFIG_DIR%%/db/migrations/products',
 
         ],
         'seeds' => [
             'Base\\Seeds\Users' => '%%PHINX_CONFIG_DIR%%/db/seeds/users',
             'Base\\Seeds\Products' => '%%PHINX_CONFIG_DIR%%/db/seeds/products',
-            'Base\\Seeds\Cart' => '%%PHINX_CONFIG_DIR%%/db/seeds/cart',
-            'Base\\Seeds\Banner' => '%%PHINX_CONFIG_DIR%%/db/seeds/banners',
         ],
     ],
     'environments' => [

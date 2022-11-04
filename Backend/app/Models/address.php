@@ -6,8 +6,15 @@ class address extends \Phalcon\Mvc\Model
 {
     public function initialize()
     {
-        $this->userId = $this->getDI()->get('auth')->getUser()->id;
-        $this->setSource('addresses');
+        $this->userId = $this->getDI()->get('auth')->getSession()['id'];
+        $this->setSource('address');
+
+        $this->belongsTo(
+            'userId',
+            Users::class,
+            'id'
+        );
+    
     }
 
 
@@ -26,6 +33,20 @@ class address extends \Phalcon\Mvc\Model
         if ($defaultAddress->count() === 0)
             $this->default= 'T'; //T for true
         else $this->default= 'F';
+    }
+    public function beforeValidationOnUpdate()
+    {
+        //check other credit cards
+        $defaultAddress = address::find(
+            [
+                'conditions'  => 'userId = :userId: and default = :default:',
+                'bind' => [
+                    'userId' => $this->userId,
+                    'default' => 'T'
+                ]
+            ]);
+        $this->default= 'T'; //T for true
+
     }
 
 

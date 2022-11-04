@@ -1,0 +1,29 @@
+
+<mat-card class="card mt-3 p-3 d-flex flex-column" style="border-radius: 5px; height: auto;">
+    <div class="container p-0">
+
+        <div class="mat-display-1 text-center">Commands</div>
+
+        <ul class="list-group mb-3">
+            <li class="list-group-item d-flex justify-content-between lh-sm">
+                <div>
+                <small class="mat-subheading-2">Subtotal</small>
+                </div>
+                <span class="mat-subheading-1">${{totalPrice}}</span>
+            </li>
+            <li class="list-group-item d-flex justify-content-between lh-sm">
+                <div>
+                <small class="mat-subheading-2">Shipping</small>
+                </div>
+                <span class="mat-subheading-1">$ {{shippingFees}} </span>
+            </li>
+        </ul>  
+        <div class="list-group-item d-flex justify-content-between mx-2 pt-3">
+            <span class="mat-title">Total</span>
+            <strong>$ {{ totalPrice }}</strong>
+        </div>
+  
+    </div>
+
+    <button mat-raised-button [routerLink]="'/checkout'" class="my-3" color="accent">Checkout</button>
+</mat-card>

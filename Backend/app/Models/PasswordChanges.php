@@ -40,7 +40,7 @@ class PasswordChanges extends Model
      *
      * @var integer
      */
-    public $createdAt;
+    public $changedAt;
 
     public function initialize()
     {
@@ -55,6 +55,6 @@ class PasswordChanges extends Model
     public function beforeValidationOnCreate()
     {
         // Timestamp the confirmation
-        $this->createdAt = time();
+        $this->changedAt = time();
     }
 }

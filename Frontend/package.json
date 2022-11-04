@@ -25,6 +25,7 @@
     "@types/google-libphonenumber": "^7.4.21",
     "firebase": "^9.2.0",
     "google-libphonenumber": "^3.2.25",
+    "moment": "^2.29.4",
     "rxjs": "~6.6.0",
     "tslib": "^2.0.0",
     "zone.js": "~0.11.4"
@@ -34,7 +35,6 @@
     "@angular/cli": "^14.1.2",
     "@angular/compiler-cli": "^14.1.2",
     "@types/jasmine": "~3.6.0",
-    "@types/node": "^12.11.1",
     "jasmine-core": "~4.4.0",
     "jasmine-spec-reporter": "~5.0.0",
     "karma": "~6.4.0",

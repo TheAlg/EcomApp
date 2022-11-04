@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace Base\Migrations\products;
+namespace Base\Migrations\Products;
 
 use Phinx\Migration\AbstractMigration;
 

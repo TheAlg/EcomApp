@@ -1,39 +1,38 @@
-import { Component, Injector, OnInit } from '@angular/core';
-import { FormGroup, Validators } from '@angular/forms';
-import { User } from 'src/app/models/user';
-import { baseComponent } from '../base.component';
+import { Component, OnInit } from '@angular/core';
+import { FormBuilder } from '@angular/forms';
+import { AuthService } from 'src/app/services/auth.service';
+import { FormsService } from 'src/app/services/forms.service';
+import { formErrors } from '../../config/Messages';
 
 @Component({
   selector: 'app-forgetpassword',
   templateUrl: './forgetpassword.component.html',
   styleUrls: ['./forgetpassword.component.scss']
 })
-export class ForgetpasswordComponent extends baseComponent implements OnInit {
+export class ForgetpasswordComponent implements OnInit {
 
-  ForgotPasswordForm : FormGroup;
 
-  constructor(injectorObj: Injector) {
-    super(injectorObj);
+  ForgotPasswordForm = this.fb.group({
+    email : this.formsProvider.email()
+  });
+  authErrors = formErrors;
+
+  constructor(
+    private userService : AuthService,
+    private fb : FormBuilder,
+    private formsProvider : FormsService)
+  {
+   
   }
 
   ngOnInit() {
-    this.ForgotPasswordForm = this.createForgotPasswordForm();
   }
 
-  forgetPassword( user: User ){
-    this.userService.forgetPassword(user);
+  forgetPassword( user: any ){
+    this.userService.forgetPassword(user).subscribe(
+      (x)=>console.log(x)
+    )
   }
 
-  createForgotPasswordForm(){
-
-    // user details form validations
-    return this.fb.group({
-        email: ['', {
-          validators:[
-          Validators.required,
-          Validators.email],
-        }],
-    })
-  }
   
 }

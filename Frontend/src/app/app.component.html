@@ -10,19 +10,19 @@
             <mat-divider></mat-divider>
 
             <a mat-list-item routerLink="">
-                <mat-icon>home</mat-icon> Home + update
+                <mat-icon>home</mat-icon> Home 
             </a>
             <a mat-list-item routerLink="."> 
                 <mat-icon>favorite</mat-icon>Favoris 
             </a>
             <a mat-list-item routerLink="/cart"> 
-                <mat-icon>add_shopping_cart</mat-icon>Panier 
+                <mat-icon>shopping_cart</mat-icon>Panier 
             </a>
             <a mat-list-item routerLink="/products"> 
                 <mat-icon>store</mat-icon>Shop 
             </a>
 
-            <a mat-list-item routerLink="/auth"> 
+            <a mat-list-item routerLink="/login"> 
                 <mat-icon>account_box</mat-icon>Comptes 
             </a>
 
@@ -34,9 +34,9 @@
    </mat-sidenav>
     <mat-sidenav-content class="overflow-visible">
 
-        <app-header></app-header>
+        <app-header> </app-header>
         <router-outlet></router-outlet>
-        <app-footer></app-footer>
+        <app-footer> </app-footer>
 
         
     </mat-sidenav-content>

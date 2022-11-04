@@ -20,7 +20,6 @@ final class UsersSeeder extends AbstractSeed
                 'profilesId' => 1,
                 'banned' => 'N',
                 'suspended' => 'N',
-                'active' => 'Y',
             ],
             [
                 'id' => 2,
@@ -32,7 +31,6 @@ final class UsersSeeder extends AbstractSeed
                 'profilesId' => 1,
                 'banned' => 'N',
                 'suspended' => 'N',
-                'active' => 'Y',
             ],
         ];
 

@@ -1,20 +1,27 @@
 import { Component, Injector, OnInit } from '@angular/core';
-import { FormControl, FormGroup, Validators } from '@angular/forms';
-import { baseComponent } from '../base.component';
-import { PasswordValidator } from '../validators/password.validators';
+import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import { ParentErrorStateMatcher, PasswordValidator } from '../../validators/password.validators';
+import { AuthService } from 'src/app/services/auth.service';
+import { FormsService } from 'src/app/services/forms.service';
+import { formErrors } from '../../config/Messages';
+
 
 @Component({
   selector: 'app-reset-password',
   templateUrl: './change-password.component.html',
   styleUrls: ['./change-password.component.scss']
 })
-export class changePasswordComponent extends baseComponent implements OnInit {
+export class changePasswordComponent implements OnInit {
 
-
+authErrors = formErrors;
+public parentErrorStateMatcher= new ParentErrorStateMatcher();
 resetPasswordForm: FormGroup;
 
-constructor(injectorObj: Injector) {
-  super(injectorObj);
+constructor(
+  private userService : AuthService,
+  private formsProvider : FormsService,
+  private fb : FormBuilder) 
+{
 }
 
 

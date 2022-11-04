@@ -40,16 +40,6 @@ class ControllerBase extends Controller
 
         if ($module === 'api'){
             $this->view->disable();
-            if($this->request->isPost() && !$this->forms->isValid()){
-                $this->response->setJsonContent([
-                    "complete" => false,
-                    "message" => $this->forms->getErrors()
-                ]);
-                $this->response->send();
-                return false;
-            }
-            //getpost is never empty
-            else $this->postData = $this->forms->getPost();
         }
         
         // Only check permissions on private controllers
@@ -96,10 +86,12 @@ class ControllerBase extends Controller
         $returnedValue = $dispatcher->getReturnedValue();
 
 
-        if ($dispatcher->getModuleName() === "api" )
-        $this->response->setContent(json_encode($returnedValue));
-        $this->response->send();
-        return false; 
+        if ($dispatcher->getModuleName() === "api" ){
+            $response = new Response();
+            $response->setContent(json_encode($returnedValue));
+            $response->send();
+        }
+
 
 
 
@@ -110,9 +102,6 @@ class ControllerBase extends Controller
             }*/
     }
 
-    public function getPost(){
-        return $this->postData; //valid, sanitized and never empty
-    }
 
     public function handleError(Messages | array $messages) : \stdClass
     {
