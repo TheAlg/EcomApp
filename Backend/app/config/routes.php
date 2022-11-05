@@ -54,7 +54,7 @@ $router->addGet('/user',
 [
     "module"     => "api",
     'controller' => 'user',
-    'action'     => 'getSession',        
+    'action'     => 'getUser',        
 ]);
 $router->addGet('/user/address',
 [

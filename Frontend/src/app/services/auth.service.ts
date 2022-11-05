@@ -1,9 +1,10 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { Observable } from 'rxjs';
+import { BehaviorSubject, Observable } from 'rxjs';
 import { User } from '../models/user';
 import { Router } from '@angular/router';
 import { API } from '../config/api';  
+import { UserService } from './user.service';
 
 
 
@@ -11,9 +12,10 @@ import { API } from '../config/api';
 export class AuthService {
 
   options  =  {headers: new HttpHeaders({'Content-Type':"application/x-www-form-urlencoded"})};
-
+  
   constructor(
     private http: HttpClient,
+    private userService : UserService,
     private router : Router) 
     { 
 
@@ -26,7 +28,7 @@ export class AuthService {
 
     signIn(user: User) : Observable<any>
     {
-        return this.http.post<any>(API.auth.login,user, this.options);
+      return this.http.post<any>(API.auth.login,user, this.options)
     }
 
     forgetPassword(user: User) : Observable<any>
@@ -41,8 +43,8 @@ export class AuthService {
 
     logout() 
     {
-      this.http.post(API.auth.logout, null, this.options)
-      //this.close();
+      this.http.post(API.auth.logout, null, this.options).subscribe()
+      this.userService.close();
       return this.router.navigate(['/login'])
     }
 

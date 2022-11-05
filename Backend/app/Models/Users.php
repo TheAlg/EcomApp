@@ -33,8 +33,6 @@ class Users extends Model
     public $banned;
 
     public $suspended;
-
-    public $active='Y';
     
     public $createdAt;
     
@@ -152,4 +150,15 @@ class Users extends Model
 
         return $this->validate($validator);
     }
+
+    public static function publicUser($id)
+    {
+        return 
+            Users::findFirst([
+                'id ='. $id,
+                'columns' =>'id, firstName, lastName, email, birthday, isoCode, phoneNumber, profilesId'
+            ]);
+        ;
+    }
+
 }

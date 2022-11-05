@@ -26,8 +26,8 @@ final class Payment extends AbstractMigration
         }
         $table = $this->table('payment');
         $table->addColumn('userId', 'integer')
-            ->addColumn('type', 'string', ['limit' => 100])
-            ->addColumn('provider', 'string', ['limit' => 100])
+            ->addColumn('type', 'string', ['limit' => 100,  'null' =>true])
+            ->addColumn('provider', 'string', ['limit' => 100,  'null' =>true])
             ->addColumn('number', 'string', ['limit' => 100])
             ->addColumn('name', 'string', ['limit' => 20])
             ->addColumn('expiry', 'string', ['limit' => 100])

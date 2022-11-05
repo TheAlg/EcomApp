@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { User } from 'src/app/models/user';
 import { AuthService } from 'src/app/services/auth.service';
 import { CartService } from 'src/app/services/cart.service';
@@ -26,9 +26,10 @@ export class HeaderComponent implements OnInit {
     ) {
   }
 
+
   ngOnInit() {
       //user data
-      this.userService.getSession().subscribe(
+      this.userService.getUser().subscribe(
         (user:User | Boolean) => this.User = user)
   
       //cart data
@@ -44,8 +45,10 @@ export class HeaderComponent implements OnInit {
   }
 
   logout() {
-   // this.User = false;
+    this.User = false;
     this.authService.logout();
     }
+
+
 
 }

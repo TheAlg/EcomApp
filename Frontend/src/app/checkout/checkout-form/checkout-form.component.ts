@@ -1,13 +1,10 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, OnInit, ViewChild } from '@angular/core';
 import { FormBuilder, FormControl } from '@angular/forms';
-import { DatePipe } from '@angular/common';
 import { FormsService } from 'src/app/services/forms.service';
 import {formErrors} from '../../config/Messages';
 import countries from '../../metadata/countries.json'
-import { CheckoutService } from 'src/app/services/checkout.service';
-import { AuthService } from 'src/app/services/auth.service';
 import { MatStepper } from '@angular/material/stepper';
-import { filter, map } from 'rxjs/operators';
+import { map } from 'rxjs/operators';
 import { UserService } from 'src/app/services/user.service';
 import { MatDatepicker } from '@angular/material/datepicker';
 import moment, { Moment } from 'moment';
@@ -18,12 +15,15 @@ import moment, { Moment } from 'moment';
   templateUrl: './checkout-form.component.html',
   styleUrls: ['./checkout-form.component.scss'],
 })
-export class CheckoutFormComponent implements OnInit {
+export class CheckoutFormComponent implements OnInit, AfterViewInit {
+
 
 
   formErrors = formErrors;
+
+  selectedCountries = countries;
   countryCode = new FormControl('');
-  personalInfoFormGroup = this.fb.group({
+  userForm = this.fb.group({
     firstName   : this.formsProvider.firstName(),
     lastName    : this.formsProvider.lastName(),
     birthday    : this.formsProvider.date(16),
@@ -31,7 +31,7 @@ export class CheckoutFormComponent implements OnInit {
     phoneNumber : this.formsProvider.phoneNumber(this.countryCode)
   })
 
-  addressFormGroup = this.fb.group({
+  addressForm = this.fb.group({
     id          : 0,
     street      : this.formsProvider.text(30),
     complement  : this.formsProvider.text(20),
@@ -39,7 +39,7 @@ export class CheckoutFormComponent implements OnInit {
     city        : this.formsProvider.city(),
   })
 
-  creditCardFormGroup = this.fb.group({
+  paymentForm = this.fb.group({
     id         : 0,
     number     :  this.formsProvider.cardNumber(),
     name       : this.formsProvider.cardName(),
@@ -47,101 +47,133 @@ export class CheckoutFormComponent implements OnInit {
     code       : this.formsProvider.number(3), 
   })
 
-  countries = countries;
-  selectedCountries = this.countries;
-
   startDate = new Date(2010, 0, 1);
 
   @ViewChild('stepper') private stepper: MatStepper;
 
+  user : any = {} ;
+  address : any = {} ;
+  payment : any = {} ;
+  initStep : number = 0;
+
+
+  loadingSepper : Promise<Boolean>;
   
   constructor(
     private fb : FormBuilder,
     private formsProvider : FormsService,
-    private checkoutService : CheckoutService,
     private userService : UserService) 
     {
     }
+  async ngAfterViewInit() {
+  }
 
-  ngOnInit(): void {
-    //check user personnal info
-    this.userService.getSession().subscribe({
-      next:(userObj:any)=>{
-          this.personalInfoFormGroup.patchValue(userObj)  
-          if (this.personalInfoFormGroup.valid && this.stepper)
-            this.stepper.selectedIndex = 1;
-      }
-    });
+  async ngOnInit()
+  {
+    this.init().then(()=>{
+       /* if (this.userForm.valid ){
+          this.initStep = 1;
+        }
+        if (this.addressForm.valid )
+          this.initStep = 2;
+        if (this.paymentForm.valid )
+          this.initStep = 3;*/
+        //this.stepper.selectedIndex = this.initStep
+    }).then(()=>this.loadingSepper =  Promise.resolve(true))
+    
+  
+  }
+  previous(){
+    this.stepper.previous();
+  }
+
+  async init()
+  {
+    //check user
+    await this.initUser();
     //check address
-    this.userService.getUserAddress().pipe
-    (map( (address:any[]) => { 
+    await this.initAddress();
+    //check payement
+    await this.initPayment()
+  }
+
+
+  async initUser()
+  {
+    this.userService.getUser().subscribe(
+      (userObj:any)=>{
+        this.user = userObj;
+          this.userForm.patchValue(userObj)  
+      }
+    );
+  }
+  async initAddress()
+  {
+    this.userService.getAddress().pipe
+    (map((address:any[]) => { 
       return address?.filter(e => 
         { return e.default==='T'})[0]
     }))
-    .subscribe({
-      next:(address:any)=>{
-          this.addressFormGroup.patchValue(address)
-          //prevent console error
-          if (this.stepper)
-            this.stepper.selectedIndex = 2;
-        }
+    .subscribe(
+      (address:any)=>{
+          this.addressForm.patchValue(address)
+          this.address = address;
       })
-      //check payement
-      this.userService.getUserPayment().pipe
-      (map( (payment:any[]) => { 
-        return payment?.filter(e => 
-          { return e.default==='T'})[0]
-      }))
-      .subscribe({
-        next:(payment:any)=>{
-          console.log(payment)
-            this.creditCardFormGroup.patchValue(payment)
-            //prevent console error
-            if (this.stepper)
-              this.stepper.selectedIndex = 3;
-          }
+  }
+  async initPayment()
+  {
+    this.userService.getPayment().pipe
+    (map( (payment:any[]) => { 
+      return payment?.filter(e => 
+        { return e.default==='T'})[0]
+    }))
+    .subscribe(
+      (payment:any)=>{
+        //console.log(payment)
+          this.paymentForm.patchValue(payment)
+          //only for now
+          this.paymentForm.patchValue({code: '555'})
+          this.payment = payment;
+          
         })
+  }
 
-    }
-
-
-  checkUser(){
-    let formValue = this.personalInfoFormGroup.value;
+  updateUser(){
+    let formValue = this.userForm.value;
     //console.log(formValue)
-    this.checkoutService.updateUser(formValue).subscribe(
+    this.userService.postUser(formValue).subscribe(
       (response:any)=>{
         if (response.complete){
           this.userService.setUser(response.user)
-        
+          this.user = response.user;
         }
         //else show error
       }
     )
     
   }
-  checkAddress(){
-    let formValue = this.addressFormGroup.value;
-    this.userService.updateAddress(formValue).subscribe(
+  updateAddress(){
+    let formValue = this.addressForm.value;
+    this.userService.postAddress(formValue).subscribe(
       (response:any)=>{
         if (response.complete){
+          this.address = response.address;
           this.userService.setAddress(response.address)
-        
         }
         //else show error
       }
     )
     
   }
-  checkPayement(){
-    let formValue = this.creditCardFormGroup.value;
-    console.log(formValue)
-    this.userService.updatePayement(formValue).subscribe(
+  updatePayement(){
+    let formValue = this.paymentForm.value;
+    //console.log(formValue)
+    this.userService.postPayement(formValue).subscribe(
       (response:any)=>{
-        console.log(response)
+        //console.log(response)
         if (response.complete){
-          console.log(response.payement)
-          this.userService.setPayement(response.address)
-        
+          this.payment = response.payment;
+          this.userService.setPayement(response.payment)
         }
         //else show error
       }
@@ -149,10 +181,6 @@ export class CheckoutFormComponent implements OnInit {
     
   }
 
-
-  changePrefix(){
-
-  }
 
   onKey(value:string) { 
     this.selectedCountries = this.search(value);
@@ -160,14 +188,14 @@ export class CheckoutFormComponent implements OnInit {
     
   search(value: string) { 
     let filter = value.toLowerCase();
-    return this.countries.filter(option => option.name.toLowerCase().startsWith(filter));
+    return countries.filter(option => option.name.toLowerCase().startsWith(filter));
   }
 
-  datePickerClose(moment: Moment, datepicker: MatDatepicker<Moment>){
-    const ctrlValue = this.creditCardFormGroup.get('expiry').value;
+  closeOnMonth(moment: Moment, datepicker: MatDatepicker<Moment>){
+    const ctrlValue = this.paymentForm.get('expiry').value;
     ctrlValue.month(moment.month());
     ctrlValue.year(moment.year());
-    this.creditCardFormGroup.value.expiry = ctrlValue;
+    this.paymentForm.get('expiry').setValue(ctrlValue);
     datepicker.close();
   }
 

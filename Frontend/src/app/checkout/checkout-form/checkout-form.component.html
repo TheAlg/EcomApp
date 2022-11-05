@@ -1,13 +1,13 @@
 
-<section class="container py-5">
+<section *ngIf="loadingSepper | async" class="container py-5">
     <div class="row d-flex justify-content-center h-100">
         <div class="col-sm-7"> 
             <mat-card class="card" style="border-radius: 5px;">
             
-                <mat-stepper labelPosition="bottom"linear #stepper>
+                <mat-stepper labelPosition="bottom"linear #stepper  [selectedIndex]="this.initStep">
 
-                    <mat-step [stepControl]="personalInfoFormGroup"[editable]="true" >
-                        <form [formGroup]="personalInfoFormGroup">
+                    <mat-step [stepControl]="userForm"[editable]="true" >
+                        <form [formGroup]="userForm">
                             <ng-template matStepLabel>Personnal Information</ng-template>
                             <mat-list>
                                 <div mat-subheader></div>
@@ -19,8 +19,8 @@
                                                 <input type="text" matInput formControlName="firstName" placeholder="first name" required>
 
                                                 <mat-error *ngFor="let validation of formErrors.firstName">
-                                                    <mat-error class="error-message" *ngIf="personalInfoFormGroup.get('firstName').hasError(validation.type) 
-                                                    && (personalInfoFormGroup.get('firstName').dirty || personalInfoFormGroup.get('firstName').touched)">
+                                                    <mat-error class="error-message" *ngIf="userForm.get('firstName').hasError(validation.type) 
+                                                    && (userForm.get('firstName').dirty || userForm.get('firstName').touched)">
                                                     {{validation.message}}
                                                     </mat-error>
                                                 </mat-error>
@@ -35,8 +35,8 @@
                                                 <input type="text" matInput formControlName="lastName" placeholder="lastname" required>
 
                                                 <mat-error *ngFor="let validation of formErrors.lastName">
-                                                    <mat-error class="error-message" *ngIf="personalInfoFormGroup.get('lastName').hasError(validation.type) 
-                                                    && (personalInfoFormGroup.get('lastName').dirty || personalInfoFormGroup.get('lastName').touched)">
+                                                    <mat-error class="error-message" *ngIf="userForm.get('lastName').hasError(validation.type) 
+                                                    && (userForm.get('lastName').dirty || userForm.get('lastName').touched)">
                                                     {{validation.message}}
                                                     </mat-error>
                                                 </mat-error>
@@ -56,8 +56,8 @@
                                         <mat-datepicker #picker [startAt]="startDate" ></mat-datepicker>
 
                                         <mat-error *ngFor="let validation of formErrors.birthday">
-                                            <mat-error class="error-message" *ngIf="personalInfoFormGroup.get('birthday').hasError(validation.type) 
-                                            && (personalInfoFormGroup.get('birthday').dirty || personalInfoFormGroup.get('birthday').touched)">
+                                            <mat-error class="error-message" *ngIf="userForm.get('birthday').hasError(validation.type) 
+                                            && (userForm.get('birthday').dirty || userForm.get('birthday').touched)">
                                             {{validation.message}}
                                             </mat-error>
                                         </mat-error>
@@ -102,15 +102,15 @@
                                 </div>
                             </mat-list>
                          
-                            <div (click)="checkUser()" class="text-end">
-                                <button mat-raised-button class="my-3"color="accent" [disabled]="!personalInfoFormGroup.valid" matStepperNext style="width: 100px;">Next</button>
+                            <div (click)="updateUser()" class="text-end">
+                                <button mat-raised-button class="my-3"color="accent" [disabled]="!userForm.valid" matStepperNext style="width: 100px;">Next</button>
                             </div>
                         </form>
 
                     </mat-step>
 
-                    <mat-step [stepControl]="addressFormGroup" [editable]="true">
-                    <form [formGroup]="addressFormGroup">
+                    <mat-step [stepControl]="addressForm" [editable]="true">
+                    <form [formGroup]="addressForm">
                         <ng-template matStepLabel>Fill out your address</ng-template>
                         <mat-list>
                             <div mat-subheader></div>
@@ -153,14 +153,14 @@
 
 
                         <div class="d-flex justify-content-between">
-                            <button mat-raised-button class="my-3" color="accent" matStepperNext style="width: 100px;">Back</button>
-                            <button (click)="checkAddress()"mat-raised-button class="my-3" [disabled]="!addressFormGroup.valid" color="accent" matStepperNext style="width: 100px;">Next</button>
+                            <button  mat-raised-button class="my-3" color="accent" matStepperPrevious style="width: 100px;">Back</button>
+                            <button (click)="updateAddress(); "mat-raised-button class="my-3" [disabled]="!addressForm.valid" color="accent" matStepperNext style="width: 100px;">Next</button>
                         </div>
                     </form>
                     </mat-step>
 
-                    <mat-step [stepControl]="creditCardFormGroup"[editable]="true" >
-                        <form [formGroup]="creditCardFormGroup">
+                    <mat-step [stepControl]="paymentForm"[editable]="true" >
+                        <form [formGroup]="paymentForm">
                             <ng-template matStepLabel>Personnal Information</ng-template>
                             <mat-list>
                                 <div mat-subheader></div>
@@ -189,7 +189,7 @@
                                                 <mat-datepicker-toggle matSuffix [for]="pickerTo">
                                                     <mat-icon matDatepickerToggleIcon style="color: black;">date_range</mat-icon>                  
                                                   </mat-datepicker-toggle>
-                                                  <mat-datepicker #pickerTo startView="multi-year" (monthSelected)="datePickerClose($event, pickerTo)"></mat-datepicker>
+                                                  <mat-datepicker #pickerTo startView="multi-year" (monthSelected)="closeOnMonth($event, pickerTo)"></mat-datepicker>
                                             </mat-form-field>
                                         </mat-list-item>
                                     </div>
@@ -205,24 +205,61 @@
                           
                             </mat-list>
                          
-                            <div class="text-end">
-                                <button mat-raised-button class="my-3" color="accent" matStepperBack style="width: 100px;">Back</button>
-                                <button mat-raised-button (click)="checkPayement()"  class="my-3"  color="accent" matStepperNext style="width: 100px;">Next</button>
+                            <div class="d-flex justify-content-between">
+                                <button mat-raised-button class="my-3" color="accent" matStepperPrevious style="width: 100px;">Back</button>
+                                <button (click)="updatePayement()"mat-raised-button class="my-3" [disabled]="!paymentForm.valid" color="accent" matStepperNext style="width: 100px;">Next</button>
                             </div>
+
                         </form>
 
                     </mat-step>
 
                     <mat-step>
-                    <ng-template matStepLabel>Take the order</ng-template>
-                    <p>a little recap here </p>
-                    <div class="d-flex justify-content-between">
-                        <button mat-raised-button class="my-3" color="accent" matStepperNext style="width: 100px;">Back</button>
+                        <ng-template matStepLabel>Take the order</ng-template>
 
-                        <div class="text-end">
-                            <button mat-raised-button class="my-3" color="accent" matStepperNext style="width: 100px;">Take the order </button>
+              
+                        <mat-card class="m-2">
+                            <div class="container">
+                                <mat-card-title class="pt-3">Your delivery address</mat-card-title>
+                                <mat-card-subtitle></mat-card-subtitle>
+                                <mat-divider class="py-3"></mat-divider>
+
+                                <mat-card-content>
+                                    <p class="mat-h3">{{user?.firstName}}  {{user?.lastName}} </p>
+                                    <p class="mat-h3">{{address?.street}} </p>
+                                    <p class="mat-h3">{{address?.city}}  {{address?.postCode}}</p>
+                                </mat-card-content>
+                                <mat-card-actions align="end"> 
+                                    <button mat-button (click)="stepper.selectedIndex = 1">Update</button>
+                                </mat-card-actions>
+                            </div>
+                        </mat-card>
+
+                        <mat-card class="m-2">
+                            <div class="container">
+                                <mat-card-title class="pt-3">Your payment</mat-card-title>
+                                    <mat-card-subtitle> </mat-card-subtitle>
+                                    <mat-divider class="py-3"></mat-divider>
+
+                                    <mat-card-content>
+                                        <p class="mat-h3">{{payment?.number}}  </p>
+                                        <p class="mat-h3">{{payment?.name}} </p>
+                                    
+
+                                    </mat-card-content>
+                                    <mat-card-actions  align="end">
+                                        <button mat-button (click)="stepper.selectedIndex = 2">Update</button>
+                                    </mat-card-actions>
+                                </div>
+                        </mat-card>
+
+                        <div class="d-flex justify-content-between">
+                            <button  mat-raised-button class="my-3" color="accent" matStepperPrevious style="width: 100px;">Back</button>
+
+                            <div class="text-end">
+                                <button mat-raised-button class="my-3" color="accent" matStepperNext style="width: 100px;">Take the order </button>
+                            </div>
                         </div>
-                    </div>
                     </mat-step>
 
 

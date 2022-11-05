@@ -211,14 +211,8 @@ class Auth extends Injectable
 
        $this->session->set('auth', [
             'id'        => $user->id,
-            'firstName' => $user->firstName,
-            'lastName'  => $user->lastName,
             'email'     => $user->email,
-            'isoCode'   => $user->isoCode,
-            'birthday'  => strtok($user->birthday, " "),
-            'email'     => $user->email,
-            'phoneNumber'=> $user->phoneNumber,
-            'profile'   => $user->profile->name,
+            //'birthday'  => strtok($user->birthday, " "),
         ]);
 
         return true;

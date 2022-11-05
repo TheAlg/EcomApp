@@ -19,17 +19,18 @@
     "@angular/fire": "^7.4.1",
     "@angular/forms": "^14.1.2",
     "@angular/material": "^14.1.2",
+    "@angular/material-moment-adapter": "~14.1.2",
     "@angular/platform-browser": "^14.1.2",
     "@angular/platform-browser-dynamic": "^14.1.2",
     "@angular/router": "^14.1.2",
     "@types/google-libphonenumber": "^7.4.21",
     "firebase": "^9.2.0",
     "google-libphonenumber": "^3.2.25",
-    "moment": "^2.29.4",
     "rxjs": "~6.6.0",
     "tslib": "^2.0.0",
     "zone.js": "~0.11.4"
   },
+
   "devDependencies": {
     "@angular-devkit/build-angular": "^14.1.2",
     "@angular/cli": "^14.1.2",

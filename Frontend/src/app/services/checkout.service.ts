@@ -21,10 +21,7 @@ export class CheckoutService {
     return this.http.get(API.checkout.get)
   }
 
-  updateUser(user: any)
-  {
-    return this.http.post(API.user.update, user, this.options);
-  }
+
 
 
 

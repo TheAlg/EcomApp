@@ -37,7 +37,10 @@ class payment extends \Phalcon\Mvc\Model
             $this->default= 'T'; //T for true
         else $this->default= 'F';
     }
-
+    public function beforeValidationOnUpdate()
+    {
+        $this->default= 'T'; //T for true
+    }
 
     public function afterDelete()
     {

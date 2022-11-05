@@ -37,7 +37,7 @@ class AuthController extends ControllerBase
         $user = new Users();
             $user->email = $data->email;
             $user->password = $data->password;
-            $user->profilesId = 2; // role user
+            $user->ProfilesId = 2; // role user
         
         //check if succesfully saved in database
         if(!$user->save()){
@@ -47,9 +47,12 @@ class AuthController extends ControllerBase
 
         //log the user in
         $this->auth->authUserById($user->id);
-        $this->responseType['complete'] =  true;
-
-        return $this->getResponseType();
+        //proceed
+        $this->dispatcher->forward([
+            'module'   => 'api',
+            "controller" => 'User',
+            "action"     => 'getUser'
+        ]);
     }
     public function loginAction() //: array
     {
@@ -73,8 +76,11 @@ class AuthController extends ControllerBase
         }
                
         //proceed
-        $this->responseType['complete'] = true;
-        return $this->getResponseType();
+        $this->dispatcher->forward([
+            'module'   => 'api',
+            "controller" => 'User',
+            "action"     => 'getUser'
+        ]);
     }
     public function logoutAction(){
         $this->auth->remove();
@@ -188,7 +194,7 @@ class AuthController extends ControllerBase
         return $this->getResponseType();
     }
 
-    public function getMessagess(Messages $messages) : array
+    public function getMessages(array | Messages $messages) : array
     {
         $errors =[];
         foreach($messages as $message){

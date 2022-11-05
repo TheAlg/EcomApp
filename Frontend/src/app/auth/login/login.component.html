@@ -9,13 +9,13 @@
             </div>
 
 
-            <form [formGroup]="signInFormGroup" class ="px-5 py-3 mb-3 border-bottom" novalidate (ngSubmit)="loginUser(signInFormGroup.value)">
+            <form [formGroup]="signInForm" class ="px-5 py-3 mb-3 border-bottom" novalidate (ngSubmit)="loginUser(signInForm.value)">
 
                 <mat-form-field class="form-group mb-3">
                     <input matInput maxlength="25" placeholder="Email" formControlName="email" required>
                     <mat-error *ngFor="let validation of authErrors.email">
-                        <mat-error class="error-message" *ngIf="signInFormGroup.get('email').hasError(validation.type) 
-                        && (signInFormGroup.get('email').dirty || signInFormGroup.get('email').touched)">{{validation.message}}
+                        <mat-error class="error-message" *ngIf="signInForm.get('email').hasError(validation.type) 
+                        && (signInForm.get('email').dirty || signInForm.get('email').touched)">{{validation.message}}
                         </mat-error>
                     </mat-error>
                 </mat-form-field>
@@ -23,8 +23,8 @@
                 <mat-form-field class="form-group mb-3">
                     <input matInput type="password" placeholder="Password" formControlName="password" required>
                     <mat-error *ngFor="let validation of authErrors.password">
-                        <mat-error class="error-message" *ngIf="signInFormGroup.get('password').hasError(validation.type) 
-                        && (signInFormGroup.get('email').dirty || signInFormGroup.get('password').touched)">{{validation.message}}
+                        <mat-error class="error-message" *ngIf="signInForm.get('password').hasError(validation.type) 
+                        && (signInForm.get('email').dirty || signInForm.get('password').touched)">{{validation.message}}
                         </mat-error>
                     </mat-error>
                 </mat-form-field>
@@ -37,7 +37,7 @@
                 <div class="container mt-3">
                     <section class="row">
                     <div class="col-sm">
-                        <button mat-raised-button color="accent" type="submit" [disabled]="!signInFormGroup.valid">Sign In </button>
+                        <button mat-raised-button color="accent" type="submit" [disabled]="!signInForm.valid">Sign In </button>
                     </div>
                     <div class="col-sm d-flex align-content-center flex-wrap">
                         <mat-checkbox formControlName="rememberMe"> Remember me </mat-checkbox>

@@ -36,17 +36,7 @@ class address extends \Phalcon\Mvc\Model
     }
     public function beforeValidationOnUpdate()
     {
-        //check other credit cards
-        $defaultAddress = address::find(
-            [
-                'conditions'  => 'userId = :userId: and default = :default:',
-                'bind' => [
-                    'userId' => $this->userId,
-                    'default' => 'T'
-                ]
-            ]);
         $this->default= 'T'; //T for true
-
     }
 
 

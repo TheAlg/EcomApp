@@ -16,11 +16,12 @@ use Phalcon\Messages\Messages;
 /**
  * Controller used handle non-authenticated session actions like login/logout,
  * user signup, and forgotten passwords
+ * 
+ * the user must be logged so he can use this controller
  */
 class UserController extends ControllerBase
 {
 
-    public $responseType; //the json response we send to frontend application
 
     public function initialize(){
 
@@ -29,22 +30,22 @@ class UserController extends ControllerBase
             'complete'      => false,
             "message"  =>[],
         ];
-
-        //the user must be logged so he can use this controller
-        if (!$this->auth->hasSession()){
-            $this->responseType['message']='user not logged in';
-            return $this->getResponseType();
-        }
-      
-        $user = Users::findFirstById($this->auth->getSession()['id']);
-     
-        if (!$user) {
-            $this->responseType['message']= 'user not found';
-            return $this->getResponseType();
-        }
-
         $this->user = Users::findFirstById($this->auth->getSession()['id']);
 
+        //unsetting private propreties
+
+    
+
+    }
+
+    public function getUserAction()
+    {
+        $this->responseType['complete']= true;
+        $this->responseType['user']= Users::publicUser($this->user->id);
+        $this->responseType['address']= $this->user->address;
+        $this->responseType['payment']= $this->user->payment;
+    
+        return $this->getResponseType();
 
     }
 
@@ -78,13 +79,6 @@ class UserController extends ControllerBase
             }
         return $this->getResponseType();
 
-    }
-
-    public function getSessionAction(){
-        if (!$this->auth->hasSession())
-            return false;
-
-        return $this->auth->getSession();
     }
 
     public function getAddressAction()
@@ -201,8 +195,6 @@ class UserController extends ControllerBase
 
         if ($this->responseType['complete'] === true && $this->auth->hasSession()){
             $this->responseType["sessionOn"] = true;
-            $this->responseType["user"] = $this->auth->getSession();
-
         }
         return $this->responseType;
     }

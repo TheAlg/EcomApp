@@ -8,6 +8,8 @@ use Phalcon\Mvc\Dispatcher;
 use Phalcon\Http\Response;
 use Base\Plugins\Acl;
 use Base\Plugins\Auth;
+use App\Application\Models\Users;
+
 
 
 /**
@@ -38,9 +40,12 @@ class ControllerBase extends Controller
         $module         = $dispatcher->getModuleName();
 
 
-        if ($module === 'api'){
+        if ($module === 'api')
             $this->view->disable();
-        }
+        
+        if ($controllerName === 'user')
+            return $this->checkUser();
+        
         
         // Only check permissions on private controllers
         /*if ($this->acl->isPrivate($controllerName)) {
@@ -102,7 +107,31 @@ class ControllerBase extends Controller
             }*/
     }
 
+    public function checkUser() 
+    {
+        //the user must be logged so he can use this controller
+        if (!$this->auth->hasSession()){
+            $response = new Response();
+            $response->setContent(json_encode([
+                'message' =>'user not logged in',
+                'complete' => false
+            ]));
+            $response->send();
+            return false;
+        }
 
+        $user = Users::findFirstById($this->auth->getSession()['id']);
+        if (!$user) {
+            $response = new Response();
+            $response->setContent(json_encode([
+                'message' =>'user not found',
+                'complete' => false
+            ]));
+            $response->send();
+            return false;
+        }
+        return true;
+    }
     public function handleError(Messages | array $messages) : \stdClass
     {
         $errorMessages = new \stdClass;

@@ -9,10 +9,7 @@ class Users extends AbstractMigration
 {
     public function change(){
 
-        $table = $this->table('users');
-        if ($table->exists()) {
-            return;
-        }
+
         $table = $this->table('users');
         $table->addColumn('firstName', 'string', ['limit' => 100, 'null' => true])
             ->addColumn('lastName', 'string', ['limit' => 100, 'null' => true])

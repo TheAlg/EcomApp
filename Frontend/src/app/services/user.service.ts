@@ -2,8 +2,10 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { User } from '../models/user';
+
 import { Router } from '@angular/router';
 import { API } from '../config/api';  
+import { filter } from 'rxjs/operators';
 
 
 
@@ -26,16 +28,22 @@ export class UserService {
   initialize()
   {
     this.http.get<User | Boolean>(API.user.get).subscribe({
-      next:(user :User | Boolean) => {
-        this.setUser(user);
-        this.loader =  Promise.resolve(true);
+      next:(respone :any | Boolean) => {
+        if (respone.complete){
+          this.setUser(respone.user);
+          this.setAddress(respone.address)
+          this.setPayement(respone.payment)
+          this.loader =  Promise.resolve(true);
+        }
       }
     })
   }
 
   close()
   {
-    this.user$.next(false);
+    this.user$.next(null);
+    this.userAddress$.next(null);
+    this.userPayment$.next(null);
   }
 
   //check if data is loaded
@@ -44,24 +52,34 @@ export class UserService {
     return this.loader;
   }
   
-  setUser(response : any)
+  setUser(response : any) : void
   {
     this.user$.next(response);
   }
-  setAddress(address : any)
+  getUser() : Observable<User | Boolean> 
+  {
+    return this.user$.pipe(filter(value => !!value));
+  }
+  setAddress(address : any) : void
   {
     this.userAddress$.next(address);
   }
-  setPayement(payement : any){
+  getAddress() : Observable<any | []> 
+  {
+    return this.userAddress$;
+  }
+  setPayement(payement : any) : void
+  {
     this.userPayment$.next(payement);
 
   }
-  getSession() : Observable<User | Boolean> 
+  getPayment() : Observable<any | []> 
   {
-    return this.user$;
+    return this.userPayment$;
   }
 
-  getUserAddress() 
+
+  /*getUserAddress() 
   {
     this.http.get(API.user.address, this.options).subscribe(
         (response:any) => {
@@ -84,19 +102,19 @@ export class UserService {
       } 
   );
   return this.userPayment$.asObservable();
-  }
+  }*/
 
-  updateUser(user: any)
+  postUser(user: any)
   {
     return this.http.post(API.user.update, user, this.options);
   }
 
-  updateAddress(address:any)
+  postAddress(address:any)
   {
     return this.http.post(API.user.address, address, this.options);
 
   }
-  updatePayement(payement:any)
+  postPayement(payement:any)
   {
     return this.http.post(API.user.payment, payement, this.options);
 

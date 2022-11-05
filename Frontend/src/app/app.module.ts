@@ -15,13 +15,13 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { CheckoutFormComponent } from './checkout/checkout-form/checkout-form.component';
 import { CheckoutCardComponent } from './checkout/checkout-card/checkout-card.component';
 import { DateAdapter, MatNativeDateModule, MAT_DATE_LOCALE, MAT_DATE_FORMATS } from '@angular/material/core';
-//import {MomentDateAdapter, MAT_MOMENT_DATE_ADAPTER_OPTIONS} from '@angular/material-moment-adapter';
+import { MomentDateAdapter, MAT_MOMENT_DATE_ADAPTER_OPTIONS} from '@angular/material-moment-adapter';
 
 // See the Moment.js docs for the meaning of these formats:
 // https://momentjs.com/docs/#/displaying/format/
 export const MY_FORMATS = {
   parse: {
-    dateInput: 'MM/YYYY',
+    dateInput: 'MM/YYYY'
   },
   display: {
     dateInput: 'MM/YYYY',
@@ -55,11 +55,11 @@ export const MY_FORMATS = {
   ],
   providers: [ 
     {provide: MAT_DATE_LOCALE, useValue: 'en-GB'},
-    /*{
+    {
       provide: DateAdapter,
       useClass: MomentDateAdapter,
       deps: [MAT_DATE_LOCALE, MAT_MOMENT_DATE_ADAPTER_OPTIONS],
-    },*/
+    },
     {provide: MAT_DATE_FORMATS, useValue: MY_FORMATS},
 
   ],
